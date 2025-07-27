@@ -1,0 +1,1098 @@
+\chapter[附\hskip\ccwd{}\hskip\ccwd{}录]{{\heiti\zihao{3}附\hskip\ccwd{}\hskip\ccwd{}录}}
+
+\section[\hspace{-2pt}支撑材料总览]{{\heiti\zihao{-3} \hspace{-8pt}支撑材料总览}}
+
+本论文的所有支撑材料组织在\texttt{MathModel\_Code/}目录下，具体分类和说明如表\ref{table:supporting_materials}所示：
+
+\begin{table}[h!]
+\footnotesize
+\setstretch{1.1}
+\captionsetup{font={small, stretch=1.512}}
+\centering
+\bicaption[支撑材料分类说明]{支撑材料分类说明。}[Classification of Supporting Materials]{Classification of Supporting Materials.}
+\begin{tabularx}{\textwidth}{p{1.8cm}p{4.2cm}X}
+\toprule
+材料类型 & 文件路径 & 说明 \\
+\midrule
+\multirow{3}{1.8cm}{实现代码} & \texttt{B/p1/p1.py} & 问题1：BT.2020到sRGB色域映射优化 \\
+ & \texttt{B/p2/p2.py} & 问题2：四通道到五通道神经网络转换 \\
+ & \texttt{B/p3/p3.py} & 问题3：LED显示器颜色校正算法 \\
+\midrule
+\multirow{4}{1.8cm}{原始数据} & \texttt{data/origin/xlsx/B题附件：RGB数值.xlsx} & 题目提供的原始RGB数值 \\
+ & \texttt{data/preprocess/}\newline\texttt{RedPicture.xlsx} & 预处理后的红色基图数据 \\
+ & \texttt{data/preprocess/}\newline\texttt{GreenPicture.xlsx} & 预处理后的绿色基图数据 \\
+ & \texttt{data/preprocess/}\newline\texttt{BluePicture.xlsx} & 预处理后的蓝色基图数据 \\
+\midrule
+\multirow{9}{1.8cm}{结果图像} & \texttt{results/p1/DE2000.png} & 问题1：50次优化$\Delta E_{00}$分布 \\
+ & \texttt{results/p1/色度.png} & 问题1：CIE1931色度图对比 \\
+ & \texttt{results/p1/面积Loss.png} & 问题1：色域面积差异分析 \\
+ & \texttt{results/p2/}\newline\texttt{Training\_Loss\_Curve.png} & 问题2：神经网络训练损失曲线 \\
+ & \texttt{results/p2/}\newline\texttt{ΔE2000\_Error\_Histogram.png} & 问题2：色差误差分布直方图 \\
+ & \texttt{results/p2/CDF.png} & 问题2：误差累积分布函数 \\
+ & \texttt{results/p2/Sample.png} & 问题2：样本预测效果展示 \\
+ & \texttt{results/p2/色度图.png} & 问题2：多基色色域可视化 \\
+ & \texttt{results/p3/\{R,G,B\}.pdf} & 问题3：RGB三原色校正对比图 \\
+\midrule
+\multirow{2}{1.8cm}{环境配置} & \texttt{env.txt} & Python依赖包列表 \\
+ & \texttt{mathmodel\_env.yaml} & Conda环境配置文件 \\
+\midrule
+说明文档 & \texttt{README.md} & 项目使用说明和运行指南 \\
+\bottomrule
+\end{tabularx}
+\label{table:supporting_materials}
+\end{table}
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    numbers=left,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,                % 自动换行
+    breakatwhitespace=false,        % 非空格处也能断行
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},  % 换行标记
+}
+\section[\hspace{-2pt}优化函数]{{\heiti\zihao{-3} \hspace{-8pt}优化函数}}
+\begin{lstlisting}[language=Python]
+    import numpy as np
+    import itertools
+    from scipy.optimize import linprog
+    import random
+    from deap import base, creator, tools, algorithms
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    from typing import List, Tuple, Dict
+    import warnings
+    warnings.filterwarnings('ignore')
+    
+    # 定义适应度函数和个体（如果未定义）
+    try:
+        creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+        creator.create("Individual", list, fitness=creator.FitnessMax)
+    except Exception as e:
+        # 避免重复定义
+        pass
+    
+    class TourismOptimizer:
+        def __init__(self):
+            # 基础数据
+            self.num_spots = 6
+            self.num_regions = 6
+            
+            # 容量数据 (按0.6折减)
+            self.spot_cap = np.array([12000, 36000, 20000, 42000, 38000, 30000]) * 0.6
+            self.night_cap_original = np.array([19000, 32000, 11000, 36000, 23000, 22000]) * 0.6
+            self.night_cap = np.copy(self.night_cap_original) # 用于修改的容量
+            self.lunch_cap = np.array([23000, 39000, 13000, 45000, 31000, 28000]) * 0.6
+            
+            # 区域偏好度
+            self.region_prefer = np.array([7, 8, 9, 8, 6, 7])
+            
+            # 原始费用和时间矩阵
+            self.cost_mat_raw = np.array([
+                [10, 25, 30, 18, 40, 25],
+                [np.inf, 10, 16, 24, 28, 18],
+                [np.inf, np.inf, 10, 24, 20, 15],
+                [np.inf, np.inf, np.inf, 10, 24, 16],
+                [np.inf, np.inf, np.inf, np.inf, 10, 22],
+                [np.inf, np.inf, np.inf, np.inf, np.inf, 10]
+            ])
+            
+            self.time_mat_raw = np.array([
+                [30, 50, 60, 35, 70, 40],
+                [np.inf, 30, 25, 30, 40, 30],
+                [np.inf, np.inf, 15, 35, 30, 30],
+                [np.inf, np.inf, np.inf, 15, 35, 25],
+                [np.inf, np.inf, np.inf, np.inf, 20, 35],
+                [np.inf, np.inf, np.inf, np.inf, np.inf, 25]
+            ])
+            
+            # 处理后的完整矩阵
+            self.cost_mat = None
+            self.time_mat = None
+            
+            # 路线相关
+            self.routes_1day = []
+            self.routes_2day = []
+            self.routes_3day_candidates = []
+            
+        def preprocess_matrices(self, cost_weight=0.5, time_weight=0.5):
+            """使用加权综合Floyd-Warshall算法补全费用和时间矩阵
+            
+            Args:
+                cost_weight: 费用权重 (默认0.5)
+                time_weight: 时间权重 (默认0.5)
+            """
+            # print(f"正在预处理交通矩阵（加权方案：费用权重={cost_weight}, 时间权重={time_weight}）...") # 避免过多打印
+            
+            # 创建邻接矩阵 (景点-区域双向图)
+            n = self.num_spots + self.num_regions  # 总节点数
+            
+            # 初始化矩阵
+            combined_full = np.full((n, n), np.inf)
+            cost_full = np.full((n, n), np.inf)
+            time_full = np.full((n, n), np.inf)
+            
+            # 对角线为0
+            np.fill_diagonal(combined_full, 0)
+            np.fill_diagonal(cost_full, 0)
+            np.fill_diagonal(time_full, 0)
+            
+            # 计算归一化常数
+            finite_costs = self.cost_mat_raw[np.isfinite(self.cost_mat_raw)]
+            finite_times = self.time_mat_raw[np.isfinite(self.time_mat_raw)]
+            cost_max = np.max(finite_costs) if len(finite_costs) > 0 else 100
+            time_max = np.max(finite_times) if len(finite_times) > 0 else 100
+            
+            # 填入已知的景点到区域的连接
+            for r in range(self.num_regions):
+                for s in range(self.num_spots):
+                    if not np.isinf(self.cost_mat_raw[r, s]):
+                        cost = self.cost_mat_raw[r, s]
+                        time = self.time_mat_raw[r, s]
+                        
+                        # 归一化
+                        cost_normalized = cost / cost_max
+                        time_normalized = time / time_max
+                        
+                        # 加权综合成本
+                        combined_cost = cost_weight * cost_normalized + time_weight * time_normalized
+                        
+                        # 景点s到区域r
+                        combined_full[s, self.num_spots + r] = combined_cost
+                        cost_full[s, self.num_spots + r] = cost
+                        time_full[s, self.num_spots + r] = time
+                        
+                        # 区域r到景点s (假设双向相等)
+                        combined_full[self.num_spots + r, s] = combined_cost
+                        cost_full[self.num_spots + r, s] = cost
+                        time_full[self.num_spots + r, s] = time
+            
+            # 使用综合成本运行Floyd-Warshall算法
+            for k in range(n):
+                for i in range(n):
+                    for j in range(n):
+                        if combined_full[i, k] + combined_full[k, j] < combined_full[i, j]:
+                            combined_full[i, j] = combined_full[i, k] + combined_full[k, j]
+                            # 同时更新对应的实际费用和时间
+                            cost_full[i, j] = cost_full[i, k] + cost_full[k, j]
+                            time_full[i, j] = time_full[i, k] + time_full[k, j]
+            
+            # 提取景点到区域的部分
+            self.cost_mat = cost_full[:self.num_spots, self.num_spots:]
+            self.time_mat = time_full[:self.num_spots, self.num_spots:]
+            
+            # print("矩阵预处理完成") # 避免过多打印
+            
+        def generate_1day_routes(self):
+            """生成所有一日游路线: S -> R -> S"""
+            # print("生成一日游路线...") # 避免过多打印
+            self.routes_1day = []
+            
+            for s1 in range(self.num_spots):
+                for r in range(self.num_regions):
+                    for s2 in range(self.num_spots):
+                        if s1 != s2:  # 避免重复访问同一景点
+                            route = {
+                                'type': '1day',
+                                'path': [s1, r, s2],
+                                'spots': [s1, s2],
+                                'regions': [r],
+                                'lunch_regions': [r],
+                                'night_regions': [],
+                                'cost': self.cost_mat[s1, r] + self.cost_mat[s2, r],
+                                'time': self.time_mat[s1, r] + self.time_mat[s2, r],
+                                'preference': sum([self.region_prefer[r]]) + 2  # 景点基础偏好
+                            }
+                            self.routes_1day.append(route)
+            
+            # print(f"一日游路线数量: {len(self.routes_1day)}") # 避免过多打印
+        
+        def generate_2day_routes(self, max_routes=10000):
+            """生成二日游路线: S -> R -> S -> R -> S -> R -> S"""
+            # print("生成二日游路线...") # 避免过多打印
+            self.routes_2day = []
+            count = 0
+            
+            for s1 in range(self.num_spots):
+                for r1 in range(self.num_regions):
+                    for s2 in range(self.num_spots):
+                        for r2 in range(self.num_regions):
+                            for s3 in range(self.num_spots):
+                                for r3 in range(self.num_regions):
+                                    for s4 in range(self.num_spots):
+                                        if len(set([s1, s2, s3, s4])) == 4:  # 所有景点不重复
+                                            if count >= max_routes:
+                                                break
+                                            
+                                            route = {
+                                                'type': '2day',
+                                                'path': [s1, r1, s2, r2, s3, r3, s4],
+                                                'spots': [s1, s2, s3, s4],
+                                                'regions': [r1, r2, r3],
+                                                'lunch_regions': [r1, r3],  # 第1天午餐r1，第2天午餐r3
+                                                'night_regions': [r2],  # 第1天住宿r2
+                                                'cost': (self.cost_mat[s1, r1] + self.cost_mat[s2, r1] + 
+                                                         self.cost_mat[s2, r2] + self.cost_mat[s3, r2] + 
+                                                         self.cost_mat[s3, r3] + self.cost_mat[s4, r3]),
+                                                'time': (self.time_mat[s1, r1] + self.time_mat[s2, r1] + 
+                                                         self.time_mat[s2, r2] + self.time_mat[s3, r2] + 
+                                                         self.time_mat[s3, r3] + self.time_mat[s4, r3]),
+                                                'preference': sum([self.region_prefer[r1], self.region_prefer[r2], 
+                                                                   self.region_prefer[r3]]) + 4
+                                            }
+                                            self.routes_2day.append(route)
+                                            count += 1
+                                        if count >= max_routes:
+                                            break
+                                    if count >= max_routes:
+                                        break
+                                if count >= max_routes:
+                                    break
+                            if count >= max_routes:
+                                break
+                        if count >= max_routes:
+                            break
+                    if count >= max_routes:
+                        break
+                if count >= max_routes:
+                    break
+            
+            # print(f"二日游路线数量: {len(self.routes_2day)}") # 避免过多打印
+        
+        def generate_3day_candidates_ga(self, population_size=1000, generations=50, candidate_size=5000):
+            """使用遗传算法生成三日游候选路线"""
+            # print("使用遗传算法生成三日游候选路线...") # 避免过多打印
+            
+            # 定义适应度函数 (已在类外部处理，确保只创建一次)
+            
+            toolbox = base.Toolbox()
+            
+            def create_individual():
+                """创建一个个体 (三日游路线)"""
+                # 随机选择6个不同的景点
+                spots = random.sample(range(self.num_spots), 6)
+                # 随机选择5个区域
+                regions = [random.randint(0, self.num_regions-1) for _ in range(5)]
+                return spots + regions
+            
+            def evaluate(individual):
+                """评估个体的适应度"""
+                spots = individual[:6]
+                regions = individual[6:]
+                
+                # 验证景点不重复
+                if len(set(spots)) != 6:
+                    return (-1000,) # 惩罚重复景点路线
+                
+                # 计算路线: S1->R1->S2->R2->S3->R3->S4->R4->S5->R5->S6
+                try:
+                    cost = 0
+                    time = 0
+                    
+                    # Day 1: S1->R1->S2->R2 (Overnight in R2)
+                    cost += self.cost_mat[spots[0], regions[0]] + self.cost_mat[spots[1], regions[0]]
+                    cost += self.cost_mat[spots[1], regions[1]] # Travel from S2 to R2 for overnight
+                    time += self.time_mat[spots[0], regions[0]] + self.time_mat[spots[1], regions[0]]
+                    time += self.time_mat[spots[1], regions[1]]
+                    
+                    # Day 2: S2->R2->S3->R3->S4->R4 (Overnight in R4)
+                    # Travel from R2 to S3 (already at R2)
+                    cost += self.cost_mat[spots[2], regions[2]]
+                    cost += self.cost_mat[spots[3], regions[2]]
+                    cost += self.cost_mat[spots[3], regions[3]] # Travel from S4 to R4 for overnight
+                    time += self.time_mat[spots[2], regions[2]]
+                    time += self.time_mat[spots[3], regions[2]]
+                    time += self.time_mat[spots[3], regions[3]]
+                    
+                    # Day 3: S4->R4->S5->R5->S6 (End trip)
+                    # Travel from R4 to S5 (already at R4)
+                    cost += self.cost_mat[spots[4], regions[4]]
+                    cost += self.cost_mat[spots[5], regions[4]]
+                    time += self.time_mat[spots[4], regions[4]]
+                    time += self.time_mat[spots[5], regions[4]]
+    
+                    preference = sum([self.region_prefer[r] for r in regions]) + 6 # 6 unique spots contribute to base preference
+                    
+                    # 归一化计算 (与MILP保持一致)
+                    max_preference_3day = 9 * 5 + 6  # 理论最大偏好度
+                    # 估计的最大成本和时间，用于遗传算法的归一化，不必非常精确，只要能大致区分好坏
+                    max_cost_estimate = 100 * 10 # 粗略估计
+                    max_time_estimate = 150 * 10 # 粗略估计
+                    
+                    pref_normalized = preference / max_preference_3day
+                    cost_normalized = cost / max_cost_estimate
+                    time_normalized = time / max_time_estimate
+                    
+                    # 加权综合评分 (权重与MILP一致)
+                    w_pref, w_cost, w_time = 0.6, 0.2, 0.2
+                    fitness = w_pref * pref_normalized - w_cost * cost_normalized - w_time * time_normalized
+                    
+                    return (fitness,)
+                except:
+                    return (-1000,) # 无效路径惩罚
+            
+            toolbox.register("individual", tools.initIterate, creator.Individual, create_individual)
+            toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+            toolbox.register("evaluate", evaluate)
+            
+            def crossover_individual(ind1, ind2):
+                """自定义交叉函数，确保景点不重复"""
+                # 对景点部分使用顺序交叉(OX)
+                spots1, spots2 = ind1[:6], ind2[:6]
+                regions1, regions2 = ind1[6:], ind2[6:]
+                
+                # 顺序交叉(Order Crossover)
+                def order_crossover(parent1, parent2):
+                    size = len(parent1)
+                    start, end = sorted(random.sample(range(size), 2))
+                    
+                    child = [-1] * size
+                    # 复制中间段
+                    child[start:end] = parent1[start:end]
+                    
+                    # 从parent2中按顺序填充剩余位置
+                    pointer = end
+                    for item in parent2[end:] + parent2[:end]:
+                        if item not in child:
+                            while child[pointer] != -1: # Find next empty spot
+                                pointer = (pointer + 1) % size
+                            child[pointer] = item
+                            pointer = (pointer + 1) % size # Move pointer for next item
+                    
+                    return child
+                
+                # 对景点使用顺序交叉
+                new_spots1 = order_crossover(spots1, spots2)
+                new_spots2 = order_crossover(spots2, spots1)
+                
+                # 对区域使用简单的两点交叉
+                if len(regions1) > 1:
+                    cx_point = random.randint(1, len(regions1)-1)
+                    new_regions1 = regions1[:cx_point] + regions2[cx_point:]
+                    new_regions2 = regions2[:cx_point] + regions1[cx_point:]
+                else:
+                    new_regions1, new_regions2 = regions1[:], regions2[:]
+                
+                # 重新组合
+                ind1[:] = new_spots1 + new_regions1
+                ind2[:] = new_spots2 + new_regions2
+                
+                return ind1, ind2
+            
+            toolbox.register("mate", crossover_individual)
+    
+            def mutate_individual(individual):
+                """自定义变异函数"""
+                if random.random() < 0.1: # 变异概率
+                    # 变异景点部分 (前6个位置) - 使用交换确保不重复
+                    pos1, pos2 = random.sample(range(6), 2)
+                    individual[pos1], individual[pos2] = individual[pos2], individual[pos1]
+                if random.random() < 0.1: # 变异概率
+                    # 变异区域部分 (后5个位置)
+                    pos = random.randint(6, 10)
+                    individual[pos] = random.randint(0, self.num_regions-1)
+                return individual,
+            
+            toolbox.register("mutate", mutate_individual)
+            toolbox.register("select", tools.selTournament, tournsize=3)
+            
+            # 运行遗传算法
+            population = toolbox.population(n=population_size)
+            
+            # 初始评估
+            fitnesses = list(map(toolbox.evaluate, population))
+            for ind, fit in zip(population, fitnesses):
+                ind.fitness.values = fit
+            
+            for gen in range(generations):
+                # 选择
+                offspring = toolbox.select(population, len(population))
+                offspring = list(map(toolbox.clone, offspring))
+                
+                # 交叉和变异
+                for child1, child2 in zip(offspring[::2], offspring[1::2]):
+                    if random.random() < 0.5:
+                        toolbox.mate(child1, child2)
+                        del child1.fitness.values
+                        del child2.fitness.values
+                
+                for mutant in offspring:
+                    if random.random() < 0.2:
+                        toolbox.mutate(mutant)
+                        del mutant.fitness.values
+                
+                # 评估无效个体
+                invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+                fitnesses = map(toolbox.evaluate, invalid_ind)
+                for ind, fit in zip(invalid_ind, fitnesses):
+                    ind.fitness.values = fit
+                
+                population[:] = offspring # Update population with new generation
+                
+                # if gen % 10 == 0: # 避免过多打印
+                #     fits = [ind.fitness.values[0] for ind in population if ind.fitness.valid]
+                #     if fits:
+                #         print(f"Generation {gen}: Max={max(fits):.2f}, Avg={np.mean(fits):.2f}")
+            
+            # 提取最优个体作为候选路线，保证多样性
+            population.sort(key=lambda x: x.fitness.values[0], reverse=True)
+            
+            self.routes_3day_candidates = []
+            used_route_keys = set()
+            
+            for ind in population:
+                spots = ind[:6]
+                regions = ind[6:]
+                
+                # 验证景点不重复
+                if len(set(spots)) != 6:
+                    continue  # 跳过有重复景点的个体
+                
+                # 创建路线唯一标识
+                route_key = tuple(spots + regions)
+                
+                # 只选择独特的路线
+                if route_key not in used_route_keys and len(self.routes_3day_candidates) < candidate_size:
+                    used_route_keys.add(route_key)
+                    
+                    route = {
+                        'type': '3day',
+                        'path': [spots[0], regions[0], spots[1], regions[1], spots[2], regions[2], 
+                                 spots[3], regions[3], spots[4], regions[4], spots[5]],
+                        'spots': spots,
+                        'regions': regions,
+                        'lunch_regions': [regions[0], regions[2], regions[4]],  # 3天的午餐
+                        'night_regions': [regions[1], regions[3]],  # 前2天的住宿
+                        'cost': 0,  # 需要重新计算
+                        'time': 0,  # 需要重新计算
+                        'preference': 0,  # 需要重新计算
+                        'fitness': ind.fitness.values[0]
+                    }
+                    
+                    # 重新精确计算成本、时间、偏好
+                    try:
+                        cost = (self.cost_mat[spots[0], regions[0]] + self.cost_mat[spots[1], regions[0]] +
+                               self.cost_mat[spots[1], regions[1]] + self.cost_mat[spots[2], regions[1]] +
+                               self.cost_mat[spots[2], regions[2]] + self.cost_mat[spots[3], regions[2]] +
+                               self.cost_mat[spots[3], regions[3]] + self.cost_mat[spots[4], regions[3]] +
+                               self.cost_mat[spots[4], regions[4]] + self.cost_mat[spots[5], regions[4]])
+                        
+                        time = (self.time_mat[spots[0], regions[0]] + self.time_mat[spots[1], regions[0]] +
+                               self.time_mat[spots[1], regions[1]] + self.time_mat[spots[2], regions[1]] +
+                               self.time_mat[spots[2], regions[2]] + self.time_mat[spots[3], regions[2]] +
+                               self.time_mat[spots[3], regions[3]] + self.time_mat[spots[4], regions[3]] +
+                               self.time_mat[spots[4], regions[4]] + self.time_mat[spots[5], regions[4]])
+                        
+                        preference = sum([self.region_prefer[r] for r in regions]) + 6
+                        
+                        route['cost'] = cost
+                        route['time'] = time
+                        route['preference'] = preference
+                        
+                        self.routes_3day_candidates.append(route)
+                    except:
+                        continue
+            
+            # print(f"三日游候选路线数量: {len(self.routes_3day_candidates)}") # 避免过多打印
+        
+        def generate_3day_routes_hybrid(self, target_routes=5000):
+            """混合方法生成三日游路线：遗传算法 + 启发式规则"""
+            print("使用混合方法生成三日游路线...")
+            
+            self.routes_3day_candidates = []
+            
+            # 1. 先用遗传算法生成高质量路线
+            print("步骤1: 遗传算法生成高质量路线...")
+            self.generate_3day_candidates_ga(candidate_size=int(target_routes * 0.1), population_size=1000, generations=50) # 减少GA生成的比例
+            ga_routes_count = len(self.routes_3day_candidates)
+            print(f"遗传算法生成: {ga_routes_count}条路线")
+            
+            # 2. 启发式生成多样化路线
+            print("步骤2: 启发式生成多样化路线...")
+            used_route_keys = set()
+            for route in self.routes_3day_candidates:
+                route_key = tuple(route['spots'] + route['regions'])
+                used_route_keys.add(route_key)
+            
+            # 为每个区域组合生成路线
+            # 考虑更系统地生成，而不是固定组合
+            # 随机生成区域组合，增加多样性
+            
+            num_heuristic_routes = target_routes - ga_routes_count
+            
+            # 尝试生成更多样化的区域组合
+            for _ in range(num_heuristic_routes * 2): # 尝试生成更多，因为会有重复或无效
+                if len(self.routes_3day_candidates) >= target_routes:
+                    break
+                
+                # 随机选择5个区域，可以重复
+                region_combo = [random.randint(0, self.num_regions - 1) for _ in range(5)]
+                
+                # 为该区域组合生成多种景点排列 (随机选择部分)
+                spot_permutations = list(itertools.permutations(range(self.num_spots)))
+                selected_perms = random.sample(spot_permutations, min(2, len(spot_permutations))) # 减少每个区域组合的景点排列数
+                
+                for spots in selected_perms:
+                    if len(self.routes_3day_candidates) >= target_routes:
+                        break
+                        
+                    route_key = tuple(list(spots) + region_combo)
+                    if route_key not in used_route_keys:
+                        used_route_keys.add(route_key)
+                        
+                        route = {
+                            'type': '3day',
+                            'path': [spots[0], region_combo[0], spots[1], region_combo[1], spots[2], region_combo[2], 
+                                     spots[3], region_combo[3], spots[4], region_combo[4], spots[5]],
+                            'spots': list(spots),
+                            'regions': region_combo,
+                            'lunch_regions': [region_combo[0], region_combo[2], region_combo[4]],
+                            'night_regions': [region_combo[1], region_combo[3]],
+                        }
+                        
+                        # 计算成本、时间、偏好
+                        try:
+                            cost = (self.cost_mat[spots[0], region_combo[0]] + self.cost_mat[spots[1], region_combo[0]] +
+                                   self.cost_mat[spots[1], region_combo[1]] + self.cost_mat[spots[2], region_combo[1]] +
+                                   self.cost_mat[spots[2], region_combo[2]] + self.cost_mat[spots[3], region_combo[2]] +
+                                   self.cost_mat[spots[3], region_combo[3]] + self.cost_mat[spots[4], region_combo[3]] +
+                                   self.cost_mat[spots[4], region_combo[4]] + self.cost_mat[spots[5], region_combo[4]])
+                            
+                            time = (self.time_mat[spots[0], region_combo[0]] + self.time_mat[spots[1], region_combo[0]] +
+                                   self.time_mat[spots[1], region_combo[1]] + self.time_mat[spots[2], region_combo[1]] +
+                                   self.time_mat[spots[2], region_combo[2]] + self.time_mat[spots[3], region_combo[2]] +
+                                   self.time_mat[spots[3], region_combo[3]] + self.time_mat[spots[4], region_combo[3]] +
+                                   self.time_mat[spots[4], region_combo[4]] + self.time_mat[spots[5], region_combo[4]])
+                            
+                            preference = sum([self.region_prefer[r] for r in region_combo]) + 6
+                            
+                            route['cost'] = cost
+                            route['time'] = time
+                            route['preference'] = preference
+                            
+                            self.routes_3day_candidates.append(route)
+                        except:
+                            continue
+            
+            print(f"混合方法总共生成: {len(self.routes_3day_candidates)}条路线")
+            print(f"其中遗传算法: {ga_routes_count}条，启发式: {len(self.routes_3day_candidates) - ga_routes_count}条")
+        
+        def solve_milp(self, routes, total_tourists=10000, weights=(0.6, 0.2, 0.2)):
+            """使用混合整数线性规划求解路线分配"""
+            # print(f"求解MILP，路线数量: {len(routes)}") # 避免过多打印
+            
+            if not routes:
+                return {'solution': [], 'total_satisfaction': 0, 'total_tourists': 0} # 返回包含总满意度和总游客数的字典
+            
+            n_routes = len(routes)
+            w_pref, w_cost, w_time = weights
+            
+            # 计算归一化的理论最大值
+            max_preference_1day = 9 * 1 + 2  # 1个区域 + 2个景点
+            max_preference_2day = 9 * 3 + 4  # 3个区域 + 4个景点  
+            max_preference_3day = 9 * 5 + 6  # 5个区域 + 6个景点
+            
+            # 成本和时间：从所有路线中找最大值作为归一化基准
+            max_cost = max([route['cost'] for route in routes]) if routes else 1
+            max_time = max([route['time'] for route in routes]) if routes else 1
+            
+            # 根据路线类型确定偏好度最大值
+            def get_max_preference(route_type):
+                if route_type == '1day':
+                    return max_preference_1day
+                elif route_type == '2day':
+                    return max_preference_2day
+                else:  # 3day
+                    return max_preference_3day
+            
+            # 构建目标函数系数 (最大化满意度 = 最大化偏好 - 最小化成本和时间)
+            c = []
+            for route in routes:
+                # 归一化各项指标到[0,1]范围
+                pref_normalized = route['preference'] / get_max_preference(route['type'])
+                cost_normalized = route['cost'] / max_cost
+                time_normalized = route['time'] / max_time
+                
+                # 加权计算满意度
+                satisfaction = w_pref * pref_normalized - w_cost * cost_normalized - w_time * time_normalized
+                c.append(-satisfaction)  # linprog求最小值，所以取负
+            
+            # 约束矩阵
+            A_ub = []
+            b_ub = []
+            
+            # 景点容量约束 - 按时段分别约束
+            max_days = 3  # 最多3日游
+            max_time_slots = max_days * 2  # 每天上午+下午 (粗略估计，实际应更精细，但为了简化模型，保持原逻辑)
+            
+            for s in range(self.num_spots):
+                constraint = []
+                for route in routes:
+                    # 计算该路线中景点s被访问的次数
+                    visit_count = route['spots'].count(s)
+                    constraint.append(visit_count)
+                A_ub.append(constraint)
+                # 景点在多个时段可复用，总容量 = 单时段容量 × 时段数
+                total_capacity = self.spot_cap[s] * max_time_slots
+                b_ub.append(total_capacity)
+            
+            # 午餐容量约束
+            for r in range(self.num_regions):
+                constraint = []
+                for route in routes:
+                    count = route['lunch_regions'].count(r)
+                    constraint.append(count)
+                A_ub.append(constraint)
+                b_ub.append(self.lunch_cap[r])
+            
+            # 住宿容量约束 - 按夜晚时段复用
+            max_nights = max_days - 1  # 最大夜晚数（3日游需要2晚）
+            
+            for r in range(self.num_regions):
+                constraint = []
+                for route in routes:
+                    count = route['night_regions'].count(r)
+                    constraint.append(count)
+                A_ub.append(constraint)
+                # 住宿容量可以在不同夜晚复用
+                total_night_capacity = self.night_cap[r] * max_nights # 使用 self.night_cap
+                b_ub.append(total_night_capacity)
+            
+            # 等式约束：总游客数
+            A_eq = [[1] * n_routes]
+            b_eq = [total_tourists]
+            
+            # 变量边界
+            bounds = [(0, total_tourists) for _ in range(n_routes)]
+            
+            try:
+                # 求解
+                result = linprog(c, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, 
+                                 bounds=bounds, method='highs')
+                
+                if result.success:
+                    solution = []
+                    total_s = 0
+                    total_t = 0
+                    for i, x in enumerate(result.x):
+                        if x > 0.1:  # 过滤掉很小的值
+                            num_tourists = int(round(x))
+                            route_info = routes[i].copy()
+                            route_info['tourists'] = num_tourists
+                            # 重新计算归一化满意度用于显示
+                            pref_normalized = route_info['preference'] / get_max_preference(route_info['type'])
+                            cost_normalized = route_info['cost'] / max_cost
+                            time_normalized = route_info['time'] / max_time
+                            route_info['satisfaction'] = w_pref * pref_normalized - w_cost * cost_normalized - w_time * time_normalized
+                            solution.append(route_info)
+                            total_s += num_tourists * route_info['satisfaction']
+                            total_t += num_tourists
+                    
+                    return {'solution': solution, 'total_satisfaction': total_s, 'total_tourists': total_t}
+                else:
+                    # print("MILP求解失败") # 避免过多打印
+                    return {'solution': [], 'total_satisfaction': 0, 'total_tourists': 0}
+            except Exception as e:
+                # print(f"MILP求解出错: {e}") # 避免过多打印
+                return {'solution': [], 'total_satisfaction': 0, 'total_tourists': 0}
+        
+        def run_optimization(self, cost_weight=0.5, time_weight=0.5, tourists_1day=30000, tourists_2day=30000, tourists_3day=20000):
+            """运行完整的优化流程
+            
+            Args:
+                cost_weight: 费用权重，用于路径预处理 (默认0.5)
+                time_weight: 时间权重，用于路径预处理 (默认0.5)
+                tourists_1day: 一日游总游客数
+                tourists_2day: 二日游总游客数
+                tourists_3day: 三日游总游客数
+            """
+            # print("开始旅游路线优化...") # 避免过多打印
+            # print(f"使用权重配置：费用权重={cost_weight}, 时间权重={time_weight}")
+            
+            # 1. 数据预处理
+            self.preprocess_matrices(cost_weight, time_weight)
+            
+            # 2. 生成路线
+            self.generate_1day_routes()
+            self.generate_2day_routes(max_routes=5000)  # 限制二日游路线数量
+            self.generate_3day_routes_hybrid(target_routes=5000) # 使用混合方法生成三日游路线
+            
+            # 3. 分别求解三种旅游方案
+            results = {}
+            
+            # 一日游
+            # print("\n=== 求解一日游方案 ===")
+            solution_1day_res = self.solve_milp(self.routes_1day, total_tourists=tourists_1day)
+            results['1day'] = solution_1day_res['solution']
+            results['1day_metrics'] = {'total_satisfaction': solution_1day_res['total_satisfaction'], 'total_tourists': solution_1day_res['total_tourists']}
+            
+            # 二日游
+            # print("\n=== 求解二日游方案 ===")
+            solution_2day_res = self.solve_milp(self.routes_2day, total_tourists=tourists_2day)
+            results['2day'] = solution_2day_res['solution']
+            results['2day_metrics'] = {'total_satisfaction': solution_2day_res['total_satisfaction'], 'total_tourists': solution_2day_res['total_tourists']}
+            
+            # 三日游
+            # print("\n=== 求解三日游方案 ===")
+            solution_3day_res = self.solve_milp(self.routes_3day_candidates, total_tourists=tourists_3day)
+            results['3day'] = solution_3day_res['solution']
+            results['3day_metrics'] = {'total_satisfaction': solution_3day_res['total_satisfaction'], 'total_tourists': solution_3day_res['total_tourists']}
+            
+            return results
+        
+        def get_aggregated_metrics(self, results):
+            """从优化结果中聚合总满意度和总游客数"""
+            total_satisfaction_all_types = 0
+            total_tourists_all_types = 0
+    
+            for day_type in ['1day', '2day', '3day']:
+                if f'{day_type}_metrics' in results:
+                    total_satisfaction_all_types += results[f'{day_type}_metrics']['total_satisfaction']
+                    total_tourists_all_types += results[f'{day_type}_metrics']['total_tourists']
+            
+            return total_satisfaction_all_types, total_tourists_all_types
+    
+        def print_results(self, results):
+            """打印优化结果"""
+            for day_type, solution in results.items():
+                if not isinstance(solution, list): # 过滤掉 metrics 字典
+                    continue
+    
+                print(f"\n{'='*50}")
+                print(f"{day_type.upper()} 旅游方案结果")
+                print(f"{'='*50}")
+                
+                if not solution:
+                    print("无可行解")
+                    continue
+                
+                total_tourists = sum([route['tourists'] for route in solution])
+                total_cost = sum([route['tourists'] * route['cost'] for route in solution])
+                total_time = sum([route['tourists'] * route['time'] for route in solution])
+                total_satisfaction = sum([route['tourists'] * route['satisfaction'] for route in solution])
+                
+                print(f"路线类型数量: {len(solution)}")
+                print(f"总游客数: {total_tourists}")
+                print(f"总交通成本: {total_cost:.0f} 元")
+                print(f"总交通时间: {total_time:.0f} 分钟")
+                print(f"总满意度: {total_satisfaction:.2f}")
+                print(f"平均满意度: {total_satisfaction/total_tourists:.2f}")
+                
+                print("\n具体路线分配:")
+                for i, route in enumerate(solution[:10]):  # 只显示前10个
+                    spots_str = "->".join([f"S{s+1}" for s in route['spots']])
+                    regions_str = "->".join([f"R{r+1}" for r in route['regions']])
+                    print(f"路线{i+1}: {route['tourists']}人")
+                    print(f"   景点路径: {spots_str}")
+                    print(f"   区域路径: {regions_str}")
+                    print(f"   成本: {route['cost']:.1f}元, 时间: {route['time']:.1f}分钟, 偏好: {route['preference']}")
+                    print()
+    
+    # 扩容成本函数
+    def expansion_cost(delta_K: float) -> float:
+        """
+        扩容成本函数
+        Args:
+            delta_K: 新增接待能力（万人次）
+        Returns:
+            扩容成本（亿元）
+        """
+        c1 = 0.0007  # 亿元
+        gamma = 1.09
+        return c1 * (delta_K ** gamma)
+    
+    # 净收益评价函数 (在主脚本中调用)
+    # B(delta_K) = vs * [Z(K) - Z(K0)] + vp * [N(K) - N(K0)]
+    # F(delta_K) = B(delta_K) - C(delta_K)
+
+\end{lstlisting}
+
+\section[\hspace{-2pt}运行函数]{{\heiti\zihao{-3} \hspace{-8pt}运行函数}}
+
+\begin{lstlisting}[language=Python]
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+    """
+    旅游路线优化运行脚本
+    """
+    import deap
+    from tourism_optimization import TourismOptimizer, expansion_cost # Import expansion cost function
+    import numpy as np # Import numpy
+    import matplotlib.pyplot as plt
+    import matplotlib # Import matplotlib to configure fonts
+    
+    # --- Start: Matplotlib Chinese Font Configuration ---
+    # Configure font to support Chinese characters
+    # Try 'SimHei' first, if not available, try 'Microsoft YaHei' or 'WenQuanYi Micro Hei'
+    matplotlib.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'Arial Unicode MS'] 
+    matplotlib.rcParams['axes.unicode_minus'] = False # Solve the problem of '-' displaying as a square
+    # --- End: Matplotlib Chinese Font Configuration ---
+    
+    def main():
+        print("=" * 60)
+        print("重庆旅游路线优化系统")
+        print("=" * 60)
+        
+        # Create optimizer instance
+        optimizer = TourismOptimizer()
+        
+        # Run optimization
+        try:
+            # Test different weight configurations
+            weight_configs = [
+                (0.5, 0.5, "均衡型"),
+                # (0.7, 0.3, "费用优先型"), # Can comment out other configurations for faster expansion analysis
+                # (0.3, 0.7, "时间优先型")
+            ]
+            
+            all_results = {}
+            
+            for cost_w, time_w, config_name in weight_configs:
+                print(f"\n{'='*80}")
+                print(f"运行{config_name}配置 (费用权重={cost_w}, 时间权重={time_w})")
+                print(f"{'='*80}")
+                
+                # Run optimization and get results
+                results = optimizer.run_optimization(cost_weight=cost_w, time_weight=time_w)
+                all_results[config_name] = results
+                
+                # Print results
+                optimizer.print_results(results)
+                
+                # Save results to file
+                save_results_to_file(results, suffix=f"_{config_name}")
+            
+            # Compare results of different configurations
+            compare_configurations(all_results)
+    
+            # ====== Problem 3: New Hotel Expansion Analysis ======
+            print(f"\n{'='*80}")
+            print("问题3：新建旅馆扩容分析")
+            print(f"{'='*80}")
+            analyze_hotel_expansion(optimizer)
+            
+        except Exception as e:
+            print(f"优化过程中出现错误: {e}")
+            import traceback
+            traceback.print_exc()
+    
+    def compare_configurations(all_results):
+        """比较不同权重配置的结果"""
+        print(f"\n{'='*80}")
+        print("不同权重配置结果比较")
+        print(f"{'='*80}")
+        
+        for day_type in ['1day', '2day', '3day']:
+            print(f"\n{day_type.upper()} 方案比较:")
+            print("-" * 60)
+            print(f"{'配置':<12} {'路线数':<8} {'总游客':<8} {'总费用':<12} {'总时间':<12} {'平均满意度':<12}")
+            print("-" * 60)
+            
+            for config_name, results in all_results.items():
+                solution = results.get(day_type, [])
+                if solution:
+                    total_tourists = sum([route['tourists'] for route in solution])
+                    total_cost = sum([route['tourists'] * route['cost'] for route in solution])
+                    total_time = sum([route['tourists'] * route['time'] for route in solution])
+                    total_satisfaction = sum([route['tourists'] * route['satisfaction'] for route in solution])
+                    avg_satisfaction = total_satisfaction / total_tourists if total_tourists > 0 else 0
+                    
+                    print(f"{config_name:<12} {len(solution):<8} {total_tourists:<8} {total_cost:<12.0f} "
+                          f"{total_time:<12.0f} {avg_satisfaction:<12.2f}")
+                else:
+                    print(f"{config_name:<12} {'无解':<8} {'-':<8} {'-':<12} {'-':<12} {'-':<12}")
+    
+    
+    def save_results_to_file(results, suffix=""):
+        """将结果保存到文件"""
+        filename = f'optimization_results{suffix}.txt'
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write("重庆旅游路线优化结果\n")
+            f.write("=" * 50 + "\n\n")
+            
+            for day_type_key, solution_or_metrics in results.items():
+                if not isinstance(solution_or_metrics, list): # Filter out metrics dictionary
+                    continue
+                solution = solution_or_metrics
+    
+                day_type = day_type_key.replace('_metrics', '') # Get actual day_type
+                
+                f.write(f"{day_type.upper()} 旅游方案结果\n")
+                f.write("=" * 30 + "\n")
+                
+                if not solution:
+                    f.write("无可行解\n\n")
+                    continue
+                
+                total_tourists = sum([route['tourists'] for route in solution])
+                total_cost = sum([route['tourists'] * route['cost'] for route in solution])
+                total_time = sum([route['tourists'] * route['time'] for route in solution])
+                total_satisfaction = sum([route['tourists'] * route['satisfaction'] for route in solution])
+                
+                f.write(f"路线类型数量: {len(solution)}\n")
+                f.write(f"总游客数: {total_tourists}\n")
+                f.write(f"总交通成本: {total_cost:.0f} 元\n")
+                f.write(f"总交通时间: {total_time:.0f} 分钟\n")
+                f.write(f"总满意度: {total_satisfaction:.2f}\n")
+                f.write(f"平均满意度: {total_satisfaction/total_tourists:.2f}\n\n")
+                
+                f.write("具体路线分配:\n")
+                for i, route in enumerate(solution[:10]):
+                    spots_str = "->".join([f"S{s+1}" for s in route['spots']])
+                    regions_str = "->".join([f"R{r+1}" for r in route['regions']])
+                    f.write(f"路线{i+1}: {route['tourists']}人\n")
+                    f.write(f"  景点路径: {spots_str}\n")
+                    f.write(f"  区域路径: {regions_str}\n")
+                    f.write(f"  成本: {route['cost']:.1f}元, 时间: {route['time']:.1f}分钟, 偏好: {route['preference']}\n\n")
+                f.write("\n")
+        
+        print(f"\n结果已保存到 {filename} 文件")
+    
+    
+    def analyze_hotel_expansion(optimizer: TourismOptimizer):
+        """
+        Analyzes the hotel expansion problem to find the optimal expansion area and scale.
+        """
+        print("\n开始分析旅馆扩容方案...")
+    
+        # Define economic value parameters
+        # vs: Economic value per unit satisfaction (billion CNY/satisfaction)
+        # vp: Average profit per tourist (billion CNY/person)
+        v_s_per_million_satisfaction = 0.1 # Assume 1 million satisfaction brings 0.1 billion CNY
+        v_p_per_million_tourists = 0.01 # Assume 1 million tourists brings 0.01 billion CNY (10 CNY/person, 1 million * 10 = 10 million CNY = 0.01 billion CNY)
+    
+        # Run baseline optimization to get metrics at K0
+        print("获取基准指标 (扩容前)...")
+        base_results = optimizer.run_optimization(cost_weight=0.5, time_weight=0.5, tourists_1day=30000, tourists_2day=30000, tourists_3day=20000)
+        Z_K0_total, N_K0_total = optimizer.get_aggregated_metrics(base_results)
+        
+        # Convert number of tourists to millions to match delta_K unit
+        N_K0_total_wan = N_K0_total / 10000.0
+    
+        print(f"基准总满意度 Z(K0): {Z_K0_total:.2f}")
+        print(f"基准总游客数 N(K0): {N_K0_total_wan:.2f} 万人次")
+    
+        best_net_benefit = -np.inf
+        best_region_idx = -1
+        best_delta_K_wan = 0
+        
+        # Define expansion capacity range (in millions of persons)
+        # Consider from 0 to a reasonable maximum value, e.g., twice the original maximum capacity
+        max_delta_K_wan = max(optimizer.night_cap_original) / 10000.0 * 2 # Twice the original max capacity, in millions of persons
+        delta_K_wan_range = np.arange(0, max_delta_K_wan + 1, 0.5) # From 0 to max_delta_K_wan, step 0.5 million persons
+        
+        # Store all test results
+        expansion_results = []
+    
+        print("\n迭代各区域及扩容规模进行模拟...")
+        for r_idx in range(optimizer.num_regions):
+            original_night_cap_r = optimizer.night_cap_original[r_idx] # Get the original capacity of this region
+    
+            for delta_K_wan in delta_K_wan_range:
+                current_night_cap_r = original_night_cap_r + (delta_K_wan * 10000) # Convert millions of persons back to persons
+                
+                # Temporarily modify the accommodation capacity of this region
+                optimizer.night_cap[r_idx] = current_night_cap_r
+                
+                # Rerun optimization
+                # Note: run_optimization will regenerate routes, ensuring each run is based on the modified capacity
+                current_results = optimizer.run_optimization(
+                    cost_weight=0.5, time_weight=0.5, # Use balanced weights for expansion analysis
+                    tourists_1day=30000, tourists_2day=30000, tourists_3day=20000
+                )
+                Z_K_total, N_K_total = optimizer.get_aggregated_metrics(current_results)
+                N_K_total_wan = N_K_total / 10000.0
+    
+                # Calculate benefit B(delta_K)
+                B_delta_K = (v_s_per_million_satisfaction * (Z_K_total - Z_K0_total) + 
+                             v_p_per_million_tourists * (N_K_total_wan - N_K0_total_wan))
+                
+                # Calculate cost C(delta_K)
+                C_delta_K = expansion_cost(delta_K_wan)
+                
+                # Calculate net benefit F(delta_K)
+                F_delta_K = B_delta_K - C_delta_K
+                
+                expansion_results.append({
+                    'region_idx': r_idx,
+                    'region_name': f'区域{r_idx + 1}',
+                    'delta_K_wan': delta_K_wan,
+                    'original_night_cap_wan': original_night_cap_r / 10000.0,
+                    'new_night_cap_wan': current_night_cap_r / 10000.0,
+                    'Z_K_total': Z_K_total,
+                    'N_K_total_wan': N_K_total_wan,
+                    'Benefit_B': B_delta_K,
+                    'Cost_C': C_delta_K,
+                    'Net_Benefit_F': F_delta_K
+                })
+    
+                # Update optimal solution
+                if F_delta_K > best_net_benefit:
+                    best_net_benefit = F_delta_K
+                    best_region_idx = r_idx
+                    best_delta_K_wan = delta_K_wan
+    
+            # Restore the original capacity of this region for the next region's test
+            optimizer.night_cap[r_idx] = optimizer.night_cap_original[r_idx]
+    
+        print("\n扩容分析结果:")
+        print("-" * 60)
+        print(f"{'区域':<8} {'扩容规模(万人次)':<18} {'原容量(万人次)':<16} {'新容量(万人次)':<16} {'净收益(亿元)':<12}")
+        print("-" * 60)
+        
+        # Print the top 20 net benefit solutions
+        sorted_expansion_results = sorted(expansion_results, key=lambda x: x['Net_Benefit_F'], reverse=True)
+        for i, res in enumerate(sorted_expansion_results[:20]):
+            print(f"{res['region_name']:<8} {res['delta_K_wan']:<18.2f} {res['original_night_cap_wan']:<16.2f} {res['new_night_cap_wan']:<16.2f} {res['Net_Benefit_F']:<12.4f}")
+    
+        print(f"\n最终建议：")
+        if best_region_idx != -1:
+            print(f"建议扩容区域: 区域{best_region_idx + 1}")
+            print(f"建议扩容规模: {best_delta_K_wan:.2f} 万人次")
+            print(f"最大净收益: {best_net_benefit:.4f} 亿元")
+            print(f"该区域原有住宿接待能力: {optimizer.night_cap_original[best_region_idx]/10000:.2f} 万人次")
+            print(f"该区域扩容后住宿接待能力: {(optimizer.night_cap_original[best_region_idx] + best_delta_K_wan * 10000)/10000:.2f} 万人次")
+    
+            # Plot net benefit
+            plt.figure(figsize=(12, 6))
+            
+            region_colors = plt.cm.tab10 # Use matplotlib's color map
+            
+            # Filter data for each region
+            regions_data = {r_idx: [] for r_idx in range(optimizer.num_regions)}
+            for res in expansion_results:
+                regions_data[res['region_idx']].append(res)
+            
+            for r_idx, data in regions_data.items():
+                data.sort(key=lambda x: x['delta_K_wan'])
+                delta_K_wan_values = [d['delta_K_wan'] for d in data]
+                net_benefit_values = [d['Net_Benefit_F'] for d in data]
+                
+                plt.plot(delta_K_wan_values, net_benefit_values, marker='o', linestyle='-',
+                         label=f'区域 {r_idx + 1}', color=region_colors(r_idx))
+            
+            plt.title('不同区域及扩容规模下的净收益')
+            plt.xlabel('新增接待能力 (万人次)')
+            plt.ylabel('净收益 (亿元)')
+            plt.grid(True)
+            plt.legend(title='区域')
+            plt.axhline(0, color='grey', linestyle='--', linewidth=0.8) # Zero benefit line
+            plt.scatter(best_delta_K_wan, best_net_benefit, color='red', marker='X', s=200, 
+                        label=f'最优解: 区域{best_region_idx+1}, {best_delta_K_wan:.2f}万人次, {best_net_benefit:.4f}亿元')
+            plt.legend()
+            plt.tight_layout()
+            plt.savefig('net_benefit_vs_expansion.png')
+            plt.show()
+    
+        else:
+            print("未找到可行的扩容方案，或者所有扩容方案都导致负净收益。")
+    
+    
+    if __name__ == "__main__":
+        main()
+    
+\end{lstlisting}
+
