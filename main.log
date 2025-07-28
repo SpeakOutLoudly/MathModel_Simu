@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  27 JUL 2025 20:37
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  28 JUL 2025 17:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -837,12 +837,11 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@dimlist=\toks59
 ) (d:/Latex/texlive/2025/texmf-dist/tex/latex/totcount/totcount.sty
 Package: totcount 2011/01/25 v1.2 package for gettingthe total value of LaTeX counters
-) (./maxpage.aux
-\c@page@totc=\count372
 )
 \maxpage.aux@stream=\write3
 \openout3 = `maxpage.aux'.
 
+\c@page@totc=\count372
 
 
 Class cquthesis Warning: Printing under oneside mode. on input line 220.
@@ -1452,11 +1451,8 @@ Package fontspec Info:
 (fontspec)             <->"[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;+tnum;+lnum;+smcp;mapping=tex-text;"
 
 Package translations Info: No language package found. I am going to use `english' as default language. on input line 46.
- (./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux
 
-LaTeX Warning: Label `subsec:3-model-build' multiply defined.
-
-) (./contents/conclusion.aux) (./contents/appendix.aux))
+No file main.aux.
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
@@ -1489,7 +1485,7 @@ Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
- (d:/Latex/texlive/2025/texmf-dist/tex/latex/caption/ltcaption.sty
+(d:/Latex/texlive/2025/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: listings package is loaded.
@@ -1505,10 +1501,12 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 ))
 Package hyperref Info: Link coloring OFF on input line 46.
- (./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1706,22 +1704,9 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 13.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 15.
-(d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 15.
- (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 15.
- (d:/Latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 18.
+(hyperref)                removing `\@ifnextchar' on input line 19.
 
 )
 
@@ -1747,7 +1732,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 1.
 
+LaTeX Font Info:    Trying to load font information for U+msa on input line 14.
+(d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
+LaTeX Font Info:    Trying to load font information for U+msb on input line 14.
+ (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 14.
+ (d:/Latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+))
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1777,11 +1773,6 @@ Package array Warning: Column C is already defined on input line 3.
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-
-Overfull \hbox (1.14879pt too wide) in paragraph at lines 58--58
- []|$\OML/cmm/m/it/10.53937 Z\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 K\OT1/cmr/m/n/10.53937 )\OML/cmm/m/it/10.53937 ; N\OT1/cmr/m/n/10.53937 (\OML/cmm/m/it/10.53937 K\OT1/cmr/m/n/10.53937 )$| 
- []
-
 )
 
 
@@ -1847,15 +1838,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [7]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 142.
+(hyperref)                removing `\@ifnextchar' on input line 147.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 154.
+(hyperref)                removing `\@ifnextchar' on input line 159.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 156.
+(hyperref)                removing `\@ifnextchar' on input line 161.
 
 
 
@@ -1867,17 +1858,29 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [8]
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 168.
+(hyperref)                removing `\@ifnextchar' on input line 233.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 171.
+(hyperref)                removing `\@ifnextchar' on input line 236.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 173.
+(hyperref)                removing `\@ifnextchar' on input line 238.
 
 
 
@@ -1891,7 +1894,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [9]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 211.
+(hyperref)                removing `\@ifnextchar' on input line 276.
 
 
 Package fontspec Info: 
@@ -1908,11 +1911,11 @@ Package fontspec Info:
 (fontspec)             Could not resolve font "FangSong/I" (it probably
 (fontspec)             doesn't exist).
 
-LaTeX Font Info:    Trying to load font information for TU+pcr on input line 257.
-LaTeX Font Info:    No file TUpcr.fd. on input line 257.
+LaTeX Font Info:    Trying to load font information for TU+pcr on input line 322.
+LaTeX Font Info:    No file TUpcr.fd. on input line 322.
 
 LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 257.
+(Font)              using `TU/lmr/m/n' instead on input line 322.
 
 
 Package fontspec Info: 
@@ -1926,8 +1929,18 @@ Package fontspec Info:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;mapping=tex-text;"
 
 
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[10]
+
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 268.
+(hyperref)                removing `\@ifnextchar' on input line 333.
 
 )
 
@@ -1938,7 +1951,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[10]
+[11]
 \openout2 = `contents/conclusion.aux'.
 
  (./contents/conclusion.tex
@@ -1968,7 +1981,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[11
+[12
 
 
 
@@ -1983,7 +1996,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[12] (./main.bbl)
+[13] (./main.bbl)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1992,7 +2005,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[13
+[14
 
 
 
@@ -2013,6 +2026,9 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \hskip 12.045pt
 (hyperref)                replaced by space on input line 1.
+
+
+LaTeX Warning: Reference `table:supporting_materials' on page 15 undefined on input line 5.
 
 Package hyperref Info: bookmark level for unknown tablesEN defaults to 0 on input line 12.
 
@@ -2048,7 +2064,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[14
+[15
 
 
 
@@ -2062,15 +2078,6 @@ LaTeX Font Warning: Font shape `TU/FangSong(0)/m/it' undefined
 (Font)              using `TU/FangSong(0)/m/n' instead on input line 70.
 
 
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[15]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2098,11 +2105,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [18]
-Overfull \hbox (42.5682pt too wide) in paragraph at lines 244--245
-[][][] 
- []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2112,6 +2114,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [19]
+Overfull \hbox (42.5682pt too wide) in paragraph at lines 244--245
+[][][] 
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2291,7 +2298,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[39])
+[39]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2301,12 +2308,152 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [40]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[41]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[42]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[43]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[44]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[45]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[46]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[47]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[48]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[49]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[50]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[51]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[52]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[53]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[54])
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[55]
 \tf@thm=\write6
 \openout6 = `main.thm'.
 
  
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-(./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux) (./contents/conclusion.aux) (./contents/appendix.aux))
+(./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux) (./contents/conclusion.aux)
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+(./contents/appendix.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
@@ -2320,7 +2467,10 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 
 Package rerunfilecheck Warning: File `main.out' has changed.
@@ -2328,16 +2478,19 @@ Package rerunfilecheck Warning: File `main.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: AB3CED1B7A3423D2AA61BF430FEF295C;3437
-(rerunfilecheck)             After:  3DC9D91518A1198845C501B07E653399;3564.
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  6DAC472BDEF3E20E5E8CD605FED21399;3675.
+
+Package lastpage Warning: Rerun to get the references right on input line 146.
+
  ) 
 Here is how much of TeX's memory you used:
- 44358 strings out of 473832
- 971142 string characters out of 5730404
- 1893381 words of memory out of 5000000
- 66526 multiletter control sequences out of 15000+600000
+ 44430 strings out of 473832
+ 972556 string characters out of 5730404
+ 1909490 words of memory out of 5000000
+ 66620 multiletter control sequences out of 15000+600000
  573865 words of font info for 168 fonts, out of 8000000 for 9000
  1349 hyphenation exceptions out of 8191
  107i,18n,131p,1503b,2601s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (41 pages).
+Output written on main.pdf (56 pages).

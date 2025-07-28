@@ -1,6 +1,6 @@
 \chapter[\hspace{0pt}符号说明]{{\heiti\zihao{3}\hspace{0pt}符号说明}}\label{chapter4: 符号说明}
 %--- 列格式：符号列 2 cm 居中；说明列自动伸缩；单位列 1 cm 居中 ---
-\newcolumntype{C}{>{\centering\arraybackslash}m{2cm}}
+\newcolumntype{C}{>{\centering\arraybackslash}m{3cm}}
 \newcolumntype{U}{>{\centering\arraybackslash}m{1cm}}
 \newcolumntype{D}{>{\raggedright\arraybackslash}X}
 
@@ -31,19 +31,21 @@
     $\mathcal P_{1,2,3}$ & 一 / 二 / 三日游套餐候选集合 \\
     $\mathcal P$ & 全部可行套餐集合，$\mathcal P=\mathcal P_1\cup\mathcal P_2\cup\mathcal P_3$ \\
     $x_p$ & 选择套餐 $p$ 的游客人数（万人） \\
-    $y_p$ & 0‑1 决策变量，$y_p = 1$ 表示采用套餐 $p$ \\
+    $\text{Pref}(p)$ & 套餐 $p$ 的偏好 \\
+    % $y_p$ & 0‑1 决策变量，$y_p = 1$ 表示采用套餐 $p$ \\
     $w_{\text{cost}}, w_{\text{time}}$ & 费用与时间权重系数 \\
-    $\operatorname{Cost}(p)$ & 套餐 $p$ 总交通费用 \\
-    $\operatorname{Time}(p)$ & 套餐 $p$ 总交通时间 \\
+    $\operatorname{Cost}(p),\operatorname{Time}(p)$ & 套餐 $p$ 总交通费用和时间开销 \\
     $Q_i$ & 景点 $i$ 基础吸引力评分 \\
     $U_p$ & 套餐 $p$ 单位游客满意度 \\
-    $A_i$ & 景点 $i$ 吸引力 \\
+    % $A_i$ & 景点 $i$ 吸引力 \\
     $\tilde C_i$ & 容量归一化，$C_i/\max_j C_j$ \\
     $\tilde R_i$ & 服务保障度，$\min\!\bigl(1,\frac{\min(L_{R_i},H_{R_i})}{C_i}\bigr)$ \\
     $\tilde S_i$ & 喜好度归一化，$S_i/10$ \\
     $\delta_{p,i,t}$ & 若套餐 $p$ 在时段 $t$ 安排景点 $S_i$ 则为 1，否则 0 \\
     $\theta_{p,j,d}$ & 套餐 $p$ 第 $d$ 天中午选择区域 $R_j$ 用餐的 0‑1 变量 \\
     $\phi_{p,j,d}$ & 套餐 $p$ 第 $d$ 天夜晚选择区域 $R_j$ 住宿的 0‑1 变量 \\
+    $\text{Simu}_{p_{i},p_{j},S}$ & 套餐 $p_i$ 与 $p_j$ 在景点方面的相似度 \\
+    $D(p_1,p_2)$ & 套餐 $p_1$ 与 $p_2$ 的距离 \\
     $C(\Delta K)$ & 扩容成本 $c_1(\Delta K)^{\gamma},\;1<\gamma\le1.2$ \\
     $\Delta K$ & 新增接待能力（万人次） \\
     $c_1$ & 扩容成本参数，$c_1 \approx 0.0007$ 亿元 \\

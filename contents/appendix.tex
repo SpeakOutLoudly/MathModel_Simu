@@ -810,6 +810,426 @@
 
 \end{lstlisting}
 
+\section[\hspace{-2pt}聚类函数]{{\heiti\zihao{-3} \hspace{-8pt}聚类函数}}
+
+\begin{lstlisting}[language=Python]
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+    """
+    旅游方案K均值聚类算法
+    使用自定义距离函数来衡量旅游方案之间的相似度
+    """
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import random
+    from typing import List, Dict, Tuple, Any
+    from collections import defaultdict
+    import warnings
+    warnings.filterwarnings('ignore')
+    
+    class TourismKMeans:
+        def __init__(self, k: int = 3, max_iterations: int = 100, tolerance: float = 1e-4):
+            """
+            初始化K均值聚类器
+            
+            Args:
+                k: 聚类数量
+                max_iterations: 最大迭代次数
+                tolerance: 收敛阈值
+            """
+            self.k = k
+            self.max_iterations = max_iterations
+            self.tolerance = tolerance
+            self.centroids = None
+            self.labels = None
+            self.inertia_ = None
+            
+        def custom_distance(self, route1: Dict, route2: Dict) -> float:
+            """
+            自定义距离函数：计算两个旅游方案之间的相似度距离
+            
+            Args:
+                route1: 第一个旅游方案
+                route2: 第二个旅游方案
+                
+            Returns:
+                float: 距离值（越小表示越相似）
+            """
+            # 1. 景点相似度（Jaccard相似度）
+            spots1 = set(route1.get('spots', []))
+            spots2 = set(route2.get('spots', []))
+            if len(spots1.union(spots2)) == 0:
+                spots_similarity = 0
+            else:
+                spots_similarity = len(spots1.intersection(spots2)) / len(spots1.union(spots2))
+            
+            # 2. 区域相似度（Jaccard相似度）
+            regions1 = set(route1.get('regions', []))
+            regions2 = set(route2.get('regions', []))
+            if len(regions1.union(regions2)) == 0:
+                regions_similarity = 0
+            else:
+                regions_similarity = len(regions1.intersection(regions2)) / len(regions1.union(regions2))
+            
+            # 3. 路线类型相似度
+            type1 = route1.get('type', '')
+            type2 = route2.get('type', '')
+            type_similarity = 1.0 if type1 == type2 else 0.0
+            
+            # 4. 成本相似度（归一化欧几里得距离）
+            cost1 = route1.get('cost', 0)
+            cost2 = route2.get('cost', 0)
+            max_cost = max(cost1, cost2) if max(cost1, cost2) > 0 else 1
+            cost_similarity = 1 - abs(cost1 - cost2) / max_cost
+            
+            # 5. 时间相似度（归一化欧几里得距离）
+            time1 = route1.get('time', 0)
+            time2 = route2.get('time', 0)
+            max_time = max(time1, time2) if max(time1, time2) > 0 else 1
+            time_similarity = 1 - abs(time1 - time2) / max_time
+            
+            # 6. 偏好相似度（归一化欧几里得距离）
+            pref1 = route1.get('preference', 0)
+            pref2 = route2.get('preference', 0)
+            max_pref = max(pref1, pref2) if max(pref1, pref2) > 0 else 1
+            pref_similarity = 1 - abs(pref1 - pref2) / max_pref
+            
+            # 加权综合距离（转换为距离，越小越相似）
+            weights = {
+                'spots': 0.25,      # 景点权重
+                'regions': 0.25,    # 区域权重
+                'type': 0.15,       # 类型权重
+                'cost': 0.15,       # 成本权重
+                'time': 0.10,       # 时间权重
+                'preference': 0.10  # 偏好权重
+            }
+            
+            total_distance = (
+                weights['spots'] * (1 - spots_similarity) +
+                weights['regions'] * (1 - regions_similarity) +
+                weights['type'] * (1 - type_similarity) +
+                weights['cost'] * (1 - cost_similarity) +
+                weights['time'] * (1 - time_similarity) +
+                weights['preference'] * (1 - pref_similarity)
+            )
+            
+            return total_distance
+        
+        def find_centroid(self, cluster_routes: List[Dict]) -> Dict:
+            """
+            计算聚类中心（找到与所有路线平均距离最小的路线作为中心）
+            
+            Args:
+                cluster_routes: 聚类中的路线列表
+                
+            Returns:
+                Dict: 聚类中心路线
+            """
+            if not cluster_routes:
+                return {}
+            
+            if len(cluster_routes) == 1:
+                return cluster_routes[0]
+            
+            # 计算每条路线到其他所有路线的平均距离
+            avg_distances = []
+            for i, route in enumerate(cluster_routes):
+                total_distance = 0
+                for j, other_route in enumerate(cluster_routes):
+                    if i != j:
+                        total_distance += self.custom_distance(route, other_route)
+                avg_distance = total_distance / (len(cluster_routes) - 1)
+                avg_distances.append((avg_distance, route))
+            
+            # 返回平均距离最小的路线作为中心
+            return min(avg_distances, key=lambda x: x[0])[1]
+        
+        def fit(self, routes: List[Dict]) -> 'TourismKMeans':
+            """
+            训练K均值聚类模型
+            
+            Args:
+                routes: 旅游方案列表
+                
+            Returns:
+                self: 训练好的模型
+            """
+            if len(routes) < self.k:
+                raise ValueError(f"路线数量({len(routes)})必须大于聚类数({self.k})")
+            
+            # 随机初始化聚类中心
+            self.centroids = random.sample(routes, self.k)
+            
+            for iteration in range(self.max_iterations):
+                # 分配阶段：将每个路线分配到最近的聚类中心
+                labels = []
+                total_distance = 0
+                
+                for route in routes:
+                    min_distance = float('inf')
+                    best_cluster = 0
+                    
+                    for i, centroid in enumerate(self.centroids):
+                        distance = self.custom_distance(route, centroid)
+                        if distance < min_distance:
+                            min_distance = distance
+                            best_cluster = i
+                    
+                    labels.append(best_cluster)
+                    total_distance += min_distance
+                
+                # 更新阶段：重新计算聚类中心
+                new_centroids = []
+                for i in range(self.k):
+                    cluster_routes = [routes[j] for j in range(len(routes)) if labels[j] == i]
+                    if cluster_routes:
+                        new_centroid = self.find_centroid(cluster_routes)
+                        new_centroids.append(new_centroid)
+                    else:
+                        # 如果某个聚类为空，随机选择一个新中心
+                        new_centroids.append(random.choice(routes))
+                
+                # 检查收敛
+                centroid_changed = False
+                for i in range(self.k):
+                    if self.custom_distance(self.centroids[i], new_centroids[i]) > self.tolerance:
+                        centroid_changed = True
+                        break
+                
+                self.centroids = new_centroids
+                
+                if not centroid_changed:
+                    print(f"算法在第{iteration + 1}次迭代后收敛")
+                    break
+            
+            self.labels = labels
+            self.inertia_ = total_distance
+            
+            return self
+        
+        def predict(self, routes: List[Dict]) -> List[int]:
+            """
+            预测新路线的聚类标签
+            
+            Args:
+                routes: 待预测的路线列表
+                
+            Returns:
+                List[int]: 聚类标签
+            """
+            if self.centroids is None:
+                raise ValueError("模型尚未训练，请先调用fit方法")
+            
+            labels = []
+            for route in routes:
+                min_distance = float('inf')
+                best_cluster = 0
+                
+                for i, centroid in enumerate(self.centroids):
+                    distance = self.custom_distance(route, centroid)
+                    if distance < min_distance:
+                        min_distance = distance
+                        best_cluster = i
+                
+                labels.append(best_cluster)
+            
+            return labels
+        
+        def get_cluster_info(self, routes: List[Dict]) -> Dict:
+            """
+            获取聚类信息
+            
+            Args:
+                routes: 原始路线列表
+                
+            Returns:
+                Dict: 聚类信息
+            """
+            if self.labels is None:
+                raise ValueError("模型尚未训练，请先调用fit方法")
+            
+            cluster_info = {}
+            
+            for i in range(self.k):
+                cluster_routes = [routes[j] for j in range(len(routes)) if self.labels[j] == i]
+                
+                if cluster_routes:
+                    # 计算聚类统计信息
+                    costs = [route.get('cost', 0) for route in cluster_routes]
+                    times = [route.get('time', 0) for route in cluster_routes]
+                    preferences = [route.get('preference', 0) for route in cluster_routes]
+                    types = [route.get('type', '') for route in cluster_routes]
+                    
+                    cluster_info[i] = {
+                        'size': len(cluster_routes),
+                        'centroid': self.centroids[i],
+                        'avg_cost': np.mean(costs),
+                        'avg_time': np.mean(times),
+                        'avg_preference': np.mean(preferences),
+                        'type_distribution': dict(zip(*np.unique(types, return_counts=True))),
+                        'routes': cluster_routes
+                    }
+            
+            return cluster_info
+        
+        def visualize_clusters(self, routes: List[Dict], save_path: str = None):
+            """
+            可视化聚类结果
+            
+            Args:
+                routes: 原始路线列表
+                save_path: 保存图片的路径
+            """
+            if self.labels is None:
+                raise ValueError("模型尚未训练，请先调用fit方法")
+            
+            # 提取特征用于可视化
+            costs = [route.get('cost', 0) for route in routes]
+            times = [route.get('time', 0) for route in routes]
+            preferences = [route.get('preference', 0) for route in routes]
+            
+            # 创建子图
+            fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+            
+            # 1. 成本-时间散点图
+            scatter = axes[0, 0].scatter(costs, times, c=self.labels, cmap='viridis', alpha=0.7)
+            axes[0, 0].set_xlabel('成本 (元)')
+            axes[0, 0].set_ylabel('时间 (分钟)')
+            axes[0, 0].set_title('聚类结果：成本 vs 时间')
+            plt.colorbar(scatter, ax=axes[0, 0])
+            
+            # 2. 成本-偏好散点图
+            scatter = axes[0, 1].scatter(costs, preferences, c=self.labels, cmap='viridis', alpha=0.7)
+            axes[0, 1].set_xlabel('成本 (元)')
+            axes[0, 1].set_ylabel('偏好度')
+            axes[0, 1].set_title('聚类结果：成本 vs 偏好度')
+            plt.colorbar(scatter, ax=axes[0, 1])
+            
+            # 3. 时间-偏好散点图
+            scatter = axes[1, 0].scatter(times, preferences, c=self.labels, cmap='viridis', alpha=0.7)
+            axes[1, 0].set_xlabel('时间 (分钟)')
+            axes[1, 0].set_ylabel('偏好度')
+            axes[1, 0].set_title('聚类结果：时间 vs 偏好度')
+            plt.colorbar(scatter, ax=axes[1, 0])
+            
+            # 4. 聚类大小柱状图
+            cluster_sizes = [sum(1 for label in self.labels if label == i) for i in range(self.k)]
+            axes[1, 1].bar(range(self.k), cluster_sizes, color='skyblue', alpha=0.7)
+            axes[1, 1].set_xlabel('聚类编号')
+            axes[1, 1].set_ylabel('路线数量')
+            axes[1, 1].set_title('各聚类大小分布')
+            axes[1, 1].set_xticks(range(self.k))
+            
+            plt.tight_layout()
+            
+            if save_path:
+                plt.savefig(save_path, dpi=300, bbox_inches='tight')
+            
+            plt.show()
+    
+    
+    def generate_sample_routes(num_routes: int = 100) -> List[Dict]:
+        """
+        生成示例旅游路线数据
+        
+        Args:
+            num_routes: 路线数量
+            
+        Returns:
+            List[Dict]: 示例路线列表
+        """
+        routes = []
+        
+        # 景点和区域信息
+        spots = list(range(6))  # S1-S6
+        regions = list(range(6))  # R1-R6
+        route_types = ['1day', '2day', '3day']
+        
+        for i in range(num_routes):
+            route_type = random.choice(route_types)
+            
+            if route_type == '1day':
+                # 一日游：2个景点，1个区域
+                route_spots = random.sample(spots, 2)
+                route_regions = random.sample(regions, 1)
+                cost = random.randint(20, 80)
+                time = random.randint(60, 180)
+                preference = random.randint(5, 15)
+                
+            elif route_type == '2day':
+                # 二日游：4个景点，3个区域
+                route_spots = random.sample(spots, 4)
+                route_regions = random.sample(regions, 3)
+                cost = random.randint(80, 200)
+                time = random.randint(180, 360)
+                preference = random.randint(15, 25)
+                
+            else:  # 3day
+                # 三日游：6个景点，5个区域
+                route_spots = random.sample(spots, 6)
+                route_regions = random.sample(regions, 5)
+                cost = random.randint(200, 400)
+                time = random.randint(360, 600)
+                preference = random.randint(25, 35)
+            
+            route = {
+                'id': i,
+                'type': route_type,
+                'spots': route_spots,
+                'regions': route_regions,
+                'cost': cost,
+                'time': time,
+                'preference': preference
+            }
+            
+            routes.append(route)
+        
+        return routes
+    
+    
+    def main():
+        """主函数：演示K均值聚类算法"""
+        print("=" * 60)
+        print("旅游方案K均值聚类算法演示")
+        print("=" * 60)
+        
+        # 生成示例数据
+        print("生成示例旅游路线数据...")
+        routes = generate_sample_routes(200)
+        print(f"生成了 {len(routes)} 条旅游路线")
+        
+        # 创建并训练K均值模型
+        print("\n训练K均值聚类模型...")
+        kmeans = TourismKMeans(k=4, max_iterations=50)
+        kmeans.fit(routes)
+        
+        # 获取聚类信息
+        print("\n聚类结果分析:")
+        cluster_info = kmeans.get_cluster_info(routes)
+        
+        for cluster_id, info in cluster_info.items():
+            print(f"\n聚类 {cluster_id}:")
+            print(f"  路线数量: {info['size']}")
+            print(f"  平均成本: {info['avg_cost']:.2f} 元")
+            print(f"  平均时间: {info['avg_time']:.2f} 分钟")
+            print(f"  平均偏好度: {info['avg_preference']:.2f}")
+            print(f"  路线类型分布: {info['type_distribution']}")
+        
+        # 可视化聚类结果
+        print("\n生成聚类可视化图表...")
+        kmeans.visualize_clusters(routes, save_path='tourism_clusters.png')
+        
+        print(f"\n聚类完成！模型惯性（总距离）: {kmeans.inertia_:.4f}")
+    
+    
+    if __name__ == "__main__":
+        main()
+    
+\end{lstlisting}
+
+
+
 \section[\hspace{-2pt}运行函数]{{\heiti\zihao{-3} \hspace{-8pt}运行函数}}
 
 \begin{lstlisting}[language=Python]
@@ -823,6 +1243,9 @@
     import numpy as np # Import numpy
     import matplotlib.pyplot as plt
     import matplotlib # Import matplotlib to configure fonts
+    
+    # Import K-means clustering algorithm
+    from Q2_k_means import TourismKMeans
     
     # --- Start: Matplotlib Chinese Font Configuration ---
     # Configure font to support Chinese characters
@@ -873,6 +1296,12 @@
             print("问题3：新建旅馆扩容分析")
             print(f"{'='*80}")
             analyze_hotel_expansion(optimizer)
+            
+            # ====== New: K-means Clustering Analysis ======
+            print(f"\n{'='*80}")
+            print("K均值聚类分析：旅游路线相似度分析")
+            print(f"{'='*80}")
+            perform_kmeans_analysis(all_results)
             
         except Exception as e:
             print(f"优化过程中出现错误: {e}")
@@ -1089,6 +1518,207 @@
     
         else:
             print("未找到可行的扩容方案，或者所有扩容方案都导致负净收益。")
+    
+    
+    def perform_kmeans_analysis(all_results):
+        """
+        对优化结果进行K均值聚类分析
+        
+        Args:
+            all_results: 优化结果字典，包含不同权重配置的结果
+        """
+        print("\n开始K均值聚类分析...")
+        
+        # 1. 收集所有路线数据
+        all_routes = []
+        route_id = 0
+        
+        for config_name, results in all_results.items():
+            for day_type in ['1day', '2day', '3day']:
+                solution = results.get(day_type, [])
+                
+                for route in solution:
+                    # 为K均值算法准备路线数据
+                    route_data = {
+                        'id': route_id,
+                        'config': config_name,
+                        'type': day_type,
+                        'spots': route.get('spots', []),
+                        'regions': route.get('regions', []),
+                        'cost': route.get('cost', 0),
+                        'time': route.get('time', 0),
+                        'preference': route.get('preference', 0),
+                        'tourists': route.get('tourists', 0),
+                        'satisfaction': route.get('satisfaction', 0)
+                    }
+                    all_routes.append(route_data)
+                    route_id += 1
+        
+        if not all_routes:
+            print("没有找到可用的路线数据进行聚类分析")
+            return
+        
+        print(f"收集到 {len(all_routes)} 条路线用于聚类分析")
+        
+        # 2. 进行K均值聚类
+        # 尝试不同的k值
+        k_values = [3, 4, 5, 6]
+        best_k = 3
+        best_inertia = float('inf')
+        
+        print("\n选择最优聚类数量...")
+        for k in k_values:
+            if k <= len(all_routes):
+                kmeans = TourismKMeans(k=k, max_iterations=50)
+                kmeans.fit(all_routes)
+                print(f"k={k}: 惯性值={kmeans.inertia_:.4f}")
+                
+                if kmeans.inertia_ < best_inertia:
+                    best_inertia = kmeans.inertia_
+                    best_k = k
+        
+        print(f"\n选择最优k值: {best_k}")
+        
+        # 3. 使用最优k值进行最终聚类
+        print(f"\n使用k={best_k}进行最终聚类...")
+        final_kmeans = TourismKMeans(k=best_k, max_iterations=100)
+        final_kmeans.fit(all_routes)
+        
+        # 4. 分析聚类结果
+        print(f"\n聚类结果分析:")
+        cluster_info = final_kmeans.get_cluster_info(all_routes)
+        
+        print("-" * 100)
+        print(f"{'聚类':<6} {'大小':<6} {'平均成本':<10} {'平均时间':<10} {'平均偏好':<10} {'平均游客':<10} {'主要类型':<15}")
+        print("-" * 100)
+        
+        for cluster_id, info in cluster_info.items():
+            main_type = max(info['type_distribution'].items(), key=lambda x: x[1])[0] if info['type_distribution'] else "未知"
+            avg_tourists = np.mean([route.get('tourists', 0) for route in info['routes']])
+            
+            print(f"{cluster_id:<6} {info['size']:<6} {info['avg_cost']:<10.1f} {info['avg_time']:<10.1f} "
+                  f"{info['avg_preference']:<10.1f} {avg_tourists:<10.1f} {main_type:<15}")
+        
+        # 5. 详细分析每个聚类
+        print(f"\n{'='*80}")
+        print("详细聚类分析:")
+        print(f"{'='*80}")
+        
+        for cluster_id, info in cluster_info.items():
+            print(f"\n聚类 {cluster_id} 详细信息:")
+            print(f"  - 路线数量: {info['size']}")
+            print(f"  - 平均成本: {info['avg_cost']:.2f} 元")
+            print(f"  - 平均时间: {info['avg_time']:.2f} 分钟")
+            print(f"  - 平均偏好度: {info['avg_preference']:.2f}")
+            print(f"  - 路线类型分布: {info['type_distribution']}")
+            
+            # 分析配置分布
+            configs = [route.get('config', '未知') for route in info['routes']]
+            config_dist = {}
+            for config in configs:
+                config_dist[config] = config_dist.get(config, 0) + 1
+            print(f"  - 权重配置分布: {config_dist}")
+            
+            # 分析景点和区域偏好
+            all_spots = []
+            all_regions = []
+            for route in info['routes']:
+                all_spots.extend(route.get('spots', []))
+                all_regions.extend(route.get('regions', []))
+            
+            if all_spots:
+                popular_spots = {}
+                for spot in all_spots:
+                    popular_spots[f'S{spot+1}'] = popular_spots.get(f'S{spot+1}', 0) + 1
+                popular_spots = sorted(popular_spots.items(), key=lambda x: x[1], reverse=True)[:3]
+                print(f"  - 热门景点: {[f'{s}({c}次)' for s, c in popular_spots]}")
+            
+            if all_regions:
+                popular_regions = {}
+                for region in all_regions:
+                    popular_regions[f'R{region+1}'] = popular_regions.get(f'R{region+1}', 0) + 1
+                popular_regions = sorted(popular_regions.items(), key=lambda x: x[1], reverse=True)[:3]
+                print(f"  - 热门区域: {[f'{r}({c}次)' for r, c in popular_regions]}")
+        
+        # 6. 可视化聚类结果
+        print(f"\n生成聚类可视化图表...")
+        final_kmeans.visualize_clusters(all_routes, save_path='tourism_optimization_clusters.png')
+        
+        # 7. 保存聚类结果到文件
+        save_clustering_results(final_kmeans, all_routes, cluster_info)
+        
+        print(f"\nK均值聚类分析完成！")
+        print(f"最终聚类数: {best_k}")
+        print(f"模型惯性值: {final_kmeans.inertia_:.4f}")
+        print(f"结果已保存到 clustering_results.txt 和 tourism_optimization_clusters.png")
+    
+    
+    def save_clustering_results(kmeans_model, routes, cluster_info):
+        """
+        保存聚类结果到文件
+        
+        Args:
+            kmeans_model: 训练好的K均值模型
+            routes: 路线数据
+            cluster_info: 聚类信息
+        """
+        filename = 'clustering_results.txt'
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write("旅游路线K均值聚类分析结果\n")
+            f.write("=" * 50 + "\n\n")
+            
+            f.write(f"聚类数量: {kmeans_model.k}\n")
+            f.write(f"路线总数: {len(routes)}\n")
+            f.write(f"模型惯性值: {kmeans_model.inertia_:.4f}\n\n")
+            
+            for cluster_id, info in cluster_info.items():
+                f.write(f"聚类 {cluster_id}:\n")
+                f.write("-" * 30 + "\n")
+                f.write(f"路线数量: {info['size']}\n")
+                f.write(f"平均成本: {info['avg_cost']:.2f} 元\n")
+                f.write(f"平均时间: {info['avg_time']:.2f} 分钟\n")
+                f.write(f"平均偏好度: {info['avg_preference']:.2f}\n")
+                f.write(f"路线类型分布: {info['type_distribution']}\n")
+                
+                # 配置分布
+                configs = [route.get('config', '未知') for route in info['routes']]
+                config_dist = {}
+                for config in configs:
+                    config_dist[config] = config_dist.get(config, 0) + 1
+                f.write(f"权重配置分布: {config_dist}\n")
+                
+                # 热门景点和区域
+                all_spots = []
+                all_regions = []
+                for route in info['routes']:
+                    all_spots.extend(route.get('spots', []))
+                    all_regions.extend(route.get('regions', []))
+                
+                if all_spots:
+                    popular_spots = {}
+                    for spot in all_spots:
+                        popular_spots[f'S{spot+1}'] = popular_spots.get(f'S{spot+1}', 0) + 1
+                    popular_spots = sorted(popular_spots.items(), key=lambda x: x[1], reverse=True)[:5]
+                    f.write(f"热门景点: {popular_spots}\n")
+                
+                if all_regions:
+                    popular_regions = {}
+                    for region in all_regions:
+                        popular_regions[f'R{region+1}'] = popular_regions.get(f'R{region+1}', 0) + 1
+                    popular_regions = sorted(popular_regions.items(), key=lambda x: x[1], reverse=True)[:5]
+                    f.write(f"热门区域: {popular_regions}\n")
+                
+                f.write("\n代表性路线 (前5条):\n")
+                for i, route in enumerate(info['routes'][:5]):
+                    spots_str = "->".join([f"S{s+1}" for s in route.get('spots', [])])
+                    regions_str = "->".join([f"R{r+1}" for r in route.get('regions', [])])
+                    f.write(f"  {i+1}. {route.get('type', 'unknown')}路线 ({route.get('config', 'unknown')}配置)\n")
+                    f.write(f"     景点: {spots_str}\n")
+                    f.write(f"     区域: {regions_str}\n")
+                    f.write(f"     成本: {route.get('cost', 0):.1f}元, 时间: {route.get('time', 0):.1f}分钟\n")
+                    f.write(f"     游客数: {route.get('tourists', 0)}, 满意度: {route.get('satisfaction', 0):.3f}\n\n")
+                
+                f.write("\n")
     
     
     if __name__ == "__main__":
