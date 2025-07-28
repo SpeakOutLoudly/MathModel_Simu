@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  28 JUL 2025 17:02
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  28 JUL 2025 19:04
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -837,11 +837,12 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 \Gm@dimlist=\toks59
 ) (d:/Latex/texlive/2025/texmf-dist/tex/latex/totcount/totcount.sty
 Package: totcount 2011/01/25 v1.2 package for gettingthe total value of LaTeX counters
+) (./maxpage.aux
+\c@page@totc=\count372
 )
 \maxpage.aux@stream=\write3
 \openout3 = `maxpage.aux'.
 
-\c@page@totc=\count372
 
 
 Class cquthesis Warning: Printing under oneside mode. on input line 220.
@@ -1451,8 +1452,14 @@ Package fontspec Info:
 (fontspec)             <->"[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;+tnum;+lnum;+smcp;mapping=tex-text;"
 
 Package translations Info: No language package found. I am going to use `english' as default language. on input line 46.
+ (./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux
 
-No file main.aux.
+LaTeX Warning: Label `subsec:3-model-build' multiply defined.
+
+
+LaTeX Warning: Label `subsec:3-model-build' multiply defined.
+
+) (./contents/conclusion.aux) (./contents/appendix.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
@@ -1485,7 +1492,7 @@ Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: longtable package is loaded.
-(d:/Latex/texlive/2025/texmf-dist/tex/latex/caption/ltcaption.sty
+ (d:/Latex/texlive/2025/texmf-dist/tex/latex/caption/ltcaption.sty
 Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: listings package is loaded.
@@ -1501,12 +1508,10 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 ))
 Package hyperref Info: Link coloring OFF on input line 46.
+ (./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
 
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1575,8 +1580,8 @@ File: contents/cover1.pdf Graphic file (type pdf)
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \hskip 12.045pt
-(hyperref)                replaced by space on input line 64.
+(hyperref)                \kern 12.045pt
+(hyperref)                removed on input line 64.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
@@ -1610,6 +1615,18 @@ Package fontspec Info:
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->"SimHei/OT:script=hani;language=dflt;mapping=tex-text;"
 
+LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+(d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+ (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 64.
+ (d:/Latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
 
 LaTeX Font Warning: Font shape `TU/SimHei(0)/b/n' undefined
 (Font)              using `TU/SimHei(0)/m/n' instead on input line 64.
@@ -1708,7 +1725,7 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 19.
 
-)
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1724,26 +1741,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 
 ]
-\openout2 = `contents/model_assumption.aux'.
-
- (./contents/model_assumption.tex
-\raisebox {0.0mm}{3}
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 1.
-
-LaTeX Font Info:    Trying to load font information for U+msa on input line 14.
-(d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
+(Font)              scaled to size 12.045pt on input line 38.
+LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
+(Font)              scaled to size 8.0pt on input line 38.
+LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
+(Font)              scaled to size 6.0pt on input line 38.
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 14.
- (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 14.
- (d:/Latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-))
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1752,7 +1756,25 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[4
+[4]
+\openout2 = `contents/model_assumption.aux'.
+
+ (./contents/model_assumption.tex
+\raisebox {0.0mm}{3}
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 1.
+
+)
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[5
 
 
 
@@ -1782,7 +1804,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[5
+[6
 
 
 
@@ -1805,12 +1827,6 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 51.
 
-LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
-(Font)              scaled to size 12.045pt on input line 55.
-LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
-(Font)              scaled to size 8.0pt on input line 55.
-LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
-(Font)              scaled to size 6.0pt on input line 55.
 
 
 
@@ -1820,7 +1836,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[6
+[7
 
 
 
@@ -1835,7 +1851,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[7]
+[8]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 147.
@@ -1857,7 +1873,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[8]
+[9]
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
@@ -1876,11 +1892,11 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 236.
+(hyperref)                removing `\@ifnextchar' on input line 238.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 238.
+(hyperref)                removing `\@ifnextchar' on input line 240.
 
 
 
@@ -1891,10 +1907,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[9]
+[10]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 276.
+(hyperref)                removing `\@ifnextchar' on input line 278.
 
 
 Package fontspec Info: 
@@ -1911,11 +1927,11 @@ Package fontspec Info:
 (fontspec)             Could not resolve font "FangSong/I" (it probably
 (fontspec)             doesn't exist).
 
-LaTeX Font Info:    Trying to load font information for TU+pcr on input line 322.
-LaTeX Font Info:    No file TUpcr.fd. on input line 322.
+LaTeX Font Info:    Trying to load font information for TU+pcr on input line 324.
+LaTeX Font Info:    No file TUpcr.fd. on input line 324.
 
 LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 322.
+(Font)              using `TU/lmr/m/n' instead on input line 324.
 
 
 Package fontspec Info: 
@@ -1937,10 +1953,10 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[10]
+[11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 333.
+(hyperref)                removing `\@ifnextchar' on input line 335.
 
 )
 
@@ -1951,7 +1967,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[11]
+[12]
 \openout2 = `contents/conclusion.aux'.
 
  (./contents/conclusion.tex
@@ -1966,28 +1982,13 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 21.
+(hyperref)                removing `\@ifnextchar' on input line 17.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 29.
+(hyperref)                removing `\@ifnextchar' on input line 25.
 
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[12
-
-
-
-
-
-])
+)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1996,7 +1997,13 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[13] (./main.bbl)
+[13
+
+
+
+
+
+] (./main.bbl)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2026,9 +2033,6 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \hskip 12.045pt
 (hyperref)                replaced by space on input line 1.
-
-
-LaTeX Warning: Reference `table:supporting_materials' on page 15 undefined on input line 5.
 
 Package hyperref Info: bookmark level for unknown tablesEN defaults to 0 on input line 12.
 
@@ -2448,12 +2452,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
  
 enddocument/afterlastpage (AED): lastpage setting LastPage.
-(./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux) (./contents/conclusion.aux)
-
-Package natbib Warning: Citation(s) may have changed.
-(natbib)                Rerun to get citations correct.
-
-(./contents/appendix.aux))
+(./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux) (./contents/conclusion.aux) (./contents/appendix.aux))
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2022/08/05>
@@ -2467,28 +2466,16 @@ LaTeX Font Warning: Size substitutions with differences
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: There were multiply-defined labels.
 
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  6DAC472BDEF3E20E5E8CD605FED21399;3675.
-
-Package lastpage Warning: Rerun to get the references right on input line 146.
-
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 4A97682756AE68045A82D3A176D75613;3651.
  ) 
 Here is how much of TeX's memory you used:
- 44430 strings out of 473832
- 972556 string characters out of 5730404
- 1909490 words of memory out of 5000000
- 66620 multiletter control sequences out of 15000+600000
+ 44509 strings out of 473832
+ 975732 string characters out of 5730404
+ 1926932 words of memory out of 5000000
+ 66677 multiletter control sequences out of 15000+600000
  573865 words of font info for 168 fonts, out of 8000000 for 9000
  1349 hyphenation exceptions out of 8191
  107i,18n,131p,1503b,2601s stack positions out of 10000i,1000n,20000p,200000b,200000s
