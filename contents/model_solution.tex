@@ -215,8 +215,7 @@
   \end{aligned}
 \end{equation}
 
-在完成“旅游方案相似度”加权距离函数的数学建模后，下一步便可对所有候选路线实施 K‑means 聚类。具体流程如下：首先，以距离函数 $D(\cdot,\cdot)$ 为度量，对给定的 K 值（簇数）运行多次随机初始化的 K‑means++，获得每个 k 下的最小 簇内平方和。随后，将 k 在预设范围 $3,\dots ,6$ 内逐一取值。最终选择使指标综合最优的 $K$。确定 $K$ 后，以其为簇数重新运行 K‑means，并选取每个簇中净收益最高或代表性最强的方案，形成至多 10 种、覆盖多样化场景且经济效益最优的扩容套餐。
-
+以上因素综合考虑到不同旅行方案在景点、区域、偏好等多个方面的相似度，可以得到不同旅行方案之间的距离。在完成“旅游方案相似度”加权距离函数的数学建模后，下一步便可对所有候选路线实施 K‑means 聚类。
 
 % 基于旅游方案相似度的加权距离函数建模完成后，即可进行K均值聚类。算法会尝试不同的K值，并根据簇内平方和选择最优的K值作为最终的结果。
 
@@ -231,6 +230,68 @@
 % 综上，当限制套餐总数不超过10种时，模型需要从“穷尽所有可能组合求全局最优”转变为“在有限方案中求近优”。这要求在模型中增加**组合选择的决策变量和约束**，或采用启发式策略筛选方案。通过上述调整，既能满足管理方便的要求，又尽可能兼顾游客满意度和资源利用的均衡。模型的结构与求解思路具有一定灵活性：无论是通过加入$y$变量实现严格的种类约束，还是通过缩减候选路线集来隐含满足要求，都体现了对原优化模型的适应性改进。
 
 \subsection[\hspace{-2pt}模型求解和结果分析]{{\heiti\zihao{4} \hspace{-8pt}模型求解和结果分析}}\label{section2: 模型求解和结果分析}
+
+具体流程如下：首先，以距离函数 $D(\cdot,\cdot)$ 为度量，对给定的 K 值（簇数）运行多次随机初始化的 K‑means++，获得每个 k 下的最小 簇内平方和。随后，将 k 在预设范围 $3,\dots ,6$ 内逐一取值。最终选择使指标综合最优的 $K$。确定 $K$ 后，以其为簇数重新运行 K‑means，并选取每个簇中净收益最高或代表性最强的方案，形成至多 10 种、覆盖多样化场景且经济效益最优的扩容套餐。
+
+% 以下是K-means聚类算法流程：
+\begin{algorithm}[H]\small
+  \setstretch{1.245}
+  \renewcommand{\algorithmcfname}{算法}
+  \caption{旅游路线相似度聚类算法}\label{alg:kmeans_route}
+
+  \KwIn{可行路线集合 $\mathcal R$（已转为特征向量）；候选聚类数 $\mathcal K=\{2,3,4,5,6\}$}
+  \KwOut{最优聚类数 $k^*$、最终模型 $\mathcal M^*$ 及聚类统计 $\mathcal C$}
+
+  \textbf{步骤1：初始化}\;
+  $k^* \leftarrow \text{first}(\mathcal K)$；\;
+  $\text{bestInertia}\leftarrow+\infty$\;
+
+  \textbf{步骤2：遍历候选聚类数}\;
+  \ForEach{$k\in\mathcal K$}{
+      $\mathcal M \leftarrow \texttt{KMeans.fit}(\mathcal R,k)$\;
+      \If{$\mathcal M.\texttt{inertia\_}<\text{bestInertia}$}{
+          $\text{bestInertia}\leftarrow\mathcal M.\texttt{inertia\_}$\;
+          $k^*\leftarrow k$\;
+      }
+  }
+
+  \textbf{步骤3：终极聚类与统计}\;
+  $\mathcal M^* \leftarrow \texttt{KMeans.fit}(\mathcal R,k^*)$\;
+  $\mathcal C \leftarrow \texttt{GetClusterInfo}(\mathcal M^*,\mathcal R)$\;
+
+  \textbf{步骤4：输出结果}\;
+  \Return $(k^*,\mathcal M^*,\mathcal C)$\;
+\end{algorithm}
+
+通过K均值算法，我们得到了最优聚类数为6，其中每个簇中净收益最高的方案只保留一种，最终得到了6种旅游方案。以下是方案的详细信息：
+
+\begin{table}[H]\small
+  \centering
+  \caption{K\,means 聚类结果汇总（$k=6$，路线总数 11，惯性值 1.178）}
+  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}m{0.6cm}
+                                  >{\centering\arraybackslash}m{1cm}
+                                  >{\centering\arraybackslash}m{1cm}
+                                  >{\centering\arraybackslash}m{1cm}
+                                  >{\centering\arraybackslash}m{1cm}
+                                  X
+                                  X}
+    \toprule
+    \textbf{簇} & \textbf{成本/元} & \textbf{时间/分钟} & \textbf{满意度} & \textbf{路线类型} & \textbf{景点路线} & \textbf{区域路线} \\
+    \midrule
+    0 & 82.0  & 165.0 & 0.392 & 2 day & S1,S4,S6,S2 & R1,R4,R2 \\
+    1 & 116.0 & 225.0 & 0.361 & 2 day & S1,S2,S6,S4 & R2,R2,R4 \\
+    2 & 25.0  & 45.0  & 0.506 & 1 day & S3,S6 & R3 \\
+    3 & 161.0 & 285.00 & 0.401 & 3 day & S1,S4,S6,S5,S3,S2 & R1,R2,R3,R3,R2 \\
+    4 & 208.00 & 370.00 & 0.3560 & 3 day & S2,S3,S5,S4,S1,S6 & R2,R3,R4,R4,R2 \\
+    5 & 219.00 & 380.00 & 0.348 & 3 day & S3,S6,S5,S2,S4,S1 & R2,R3,R4,R2,R4 \\
+    \bottomrule
+  \end{tabularx}
+  \label{tab:kmeans_summary}
+\end{table}
+
+可以看出，聚类结果能够有效地将不同类型的旅游路线进行区分，每个簇代表了具有代表性的出行偏好和路线组合。各方案在成本、时间和满意度等方面表现均衡，能够满足不同游客的需求。整体来看，模型聚类效果良好，结果具有较强的实际参考价值。
+
+
 
 
 

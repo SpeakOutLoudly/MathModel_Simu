@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  28 JUL 2025 19:04
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  29 JUL 2025 12:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1876,42 +1876,20 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [9]
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
-Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 233.
+(hyperref)                removing `\@ifnextchar' on input line 232.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 238.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 240.
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[10]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 278.
-
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+202F) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
 
 Package fontspec Info: 
 (fontspec)             Could not resolve font "FangSong/BI" (it probably
@@ -1927,11 +1905,11 @@ Package fontspec Info:
 (fontspec)             Could not resolve font "FangSong/I" (it probably
 (fontspec)             doesn't exist).
 
-LaTeX Font Info:    Trying to load font information for TU+pcr on input line 324.
-LaTeX Font Info:    No file TUpcr.fd. on input line 324.
+LaTeX Font Info:    Trying to load font information for TU+pcr on input line 257.
+LaTeX Font Info:    No file TUpcr.fd. on input line 257.
 
 LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 324.
+(Font)              using `TU/lmr/m/n' instead on input line 257.
 
 
 Package fontspec Info: 
@@ -1945,6 +1923,106 @@ Package fontspec Info:
 (fontspec)             <->"FangSong/OT:script=hani;language=dflt;mapping=tex-text;"
 
 
+LaTeX Font Warning: Font shape `TU/pcr/m/it' undefined
+(Font)              using `TU/pcr/m/n' instead on input line 257.
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[10]
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 285.00| 
+ []
+
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+
+Overfull \hbox (15.99736pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 S1,S4,S6,S5,S3,S2| 
+ []
+
+
+Overfull \hbox (8.08229pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 R1,R2,R3,R3,R2| 
+ []
+
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 208.00| 
+ []
+
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 370.00| 
+ []
+
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 0.3560| 
+ []
+
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+
+Overfull \hbox (15.99736pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 S2,S3,S5,S4,S1,S6| 
+ []
+
+
+Overfull \hbox (8.08229pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 R2,R3,R4,R4,R2| 
+ []
+
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 219.00| 
+ []
+
+
+Overfull \hbox (0.53052pt too wide) in paragraph at lines 288--288
+ []|\TU/TeXGyreTermesX(0)/m/n/10.53937 380.00| 
+ []
+
+Missing character: There is no   (U+2006) in font [TeXGyreTermesX-Regular.otf]/OT:script=latn;language=dflt;+tnum;+lnum;mapping=tex-text;!
+
+Overfull \hbox (15.99736pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 S3,S6,S5,S2,S4,S1| 
+ []
+
+
+Overfull \hbox (8.08229pt too wide) in paragraph at lines 288--288
+[]|\TU/TeXGyreTermesX(0)/m/n/10.53937 R2,R3,R4,R2,R4| 
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 299.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 301.
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -1956,7 +2034,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 335.
+(hyperref)                removing `\@ifnextchar' on input line 339.
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[12]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 396.
 
 )
 
@@ -1967,7 +2059,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[12]
+[13]
 \openout2 = `contents/conclusion.aux'.
 
  (./contents/conclusion.tex
@@ -1997,7 +2089,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[13
+[14
 
 
 
@@ -2012,7 +2104,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[14
+[15
 
 
 
@@ -2037,17 +2129,17 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Info: bookmark level for unknown tablesEN defaults to 0 on input line 12.
 
 Underfull \hbox (badness 2735) in paragraph at lines 41--41
-[]|\TU/pcr/m/n/10.53937 data/origin/xlsx/B \TU/FangSong(0)/m/n/10.53937 题 附
+[]|\TU/pcr/m/it/10.53937 data/origin/xlsx/B \TU/FangSong(0)/m/n/10.53937 题 附
  []
 
 
 Overfull \hbox (2.92381pt too wide) in paragraph at lines 41--41
-\TU/pcr/m/n/10.53937 Training_Loss_Curve.png| 
+\TU/pcr/m/it/10.53937 Training_Loss_Curve.png| 
  []
 
 
 Overfull \hbox (25.91019pt too wide) in paragraph at lines 41--41
-\TU/pcr/m/n/10.53937 ΔE2000_Error_Histogram.png| 
+\TU/pcr/m/it/10.53937 ΔE2000_Error_Histogram.png| 
  []
 
 (d:/Latex/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -2068,29 +2160,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[15
+[16
 
 
 
 ]
 
-LaTeX Font Warning: Font shape `TU/pcr/m/it' undefined
-(Font)              using `TU/pcr/m/n' instead on input line 70.
-
-
 LaTeX Font Warning: Font shape `TU/FangSong(0)/m/it' undefined
 (Font)              using `TU/FangSong(0)/m/n' instead on input line 70.
 
 
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[16]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2118,11 +2197,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [19]
-Overfull \hbox (42.5682pt too wide) in paragraph at lines 244--245
-[][][] 
- []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2132,6 +2206,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [20]
+Overfull \hbox (42.5682pt too wide) in paragraph at lines 244--245
+[][][] 
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2437,7 +2516,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[54])
+[54]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2446,7 +2525,16 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[55]
+[55])
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[56]
 \tf@thm=\write6
 \openout6 = `main.thm'.
 
@@ -2469,15 +2557,15 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 4A97682756AE68045A82D3A176D75613;3651.
+(rerunfilecheck)             Checksum: 61C5CE3EA80EB5DCD9B9F6ECCC8FB636;3651.
  ) 
 Here is how much of TeX's memory you used:
- 44509 strings out of 473832
- 975732 string characters out of 5730404
- 1926932 words of memory out of 5000000
- 66677 multiletter control sequences out of 15000+600000
- 573865 words of font info for 168 fonts, out of 8000000 for 9000
+ 44570 strings out of 473832
+ 979266 string characters out of 5730404
+ 1928023 words of memory out of 5000000
+ 66732 multiletter control sequences out of 15000+600000
+ 573897 words of font info for 172 fonts, out of 8000000 for 9000
  1349 hyphenation exceptions out of 8191
  107i,18n,131p,1503b,2601s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (56 pages).
+Output written on main.pdf (57 pages).
