@@ -1,4 +1,4 @@
-\begin{thebibliography}{8}
+\begin{thebibliography}{0}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax\else
@@ -10,46 +10,5 @@
   \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
   \let\eprint\href
 \fi
-
-\bibitem[Poynton(2012)]{poynton2012digital}
-Poynton C.
-\newblock Digital video and hd: algorithms and interfaces\allowbreak[J].
-\newblock Elsevier, 2012.
-
-\bibitem[Sugawara et~al.(2014)Sugawara, Choi, and Wood]{6784055}
-Sugawara M, Choi S~Y, Wood D.
-\newblock Ultra-high-definition television (rec. itu-r bt.2020): A generational leap in the evolution of television [standards in a nutshell]\allowbreak[J/OL].
-\newblock IEEE Signal Processing Magazine, 2014, 31\allowbreak (3): 170-174.
-\newblock DOI: \doi{10.1109/MSP.2014.2302331}.
-
-\bibitem[Fairman et~al.(1997)Fairman, Brill, and Hemmendinger]{fairman1997cie}
-Fairman H~S, Brill M~H, Hemmendinger H.
-\newblock How the cie 1931 color-matching functions were derived from wright-guild data\allowbreak[J].
-\newblock Color Research \& Application: Endorsed by Inter-Society Color Council, The Colour Group (Great Britain), Canadian Society for Color, Color Science Association of Japan, Dutch Society for the Study of Color, The Swedish Colour Centre Foundation, Colour Society of Australia, Centre Fran{\c{c}}ais de la Couleur, 1997, 22\allowbreak (1): 11-23.
-
-\bibitem[Hunter(1958)]{hunter1958photoelectric}
-Hunter R~S.
-\newblock Photoelectric color difference meter\allowbreak[J].
-\newblock Journal of the Optical Society of America, 1958, 48\allowbreak (12): 985-995.
-
-\bibitem[郑元林刘士伟(2004)]{YSZL200407020}
-郑元林刘士伟.
-\newblock 最新色差公式:CIEDE2000\allowbreak[J].
-\newblock 印刷质量与标准化, 2004\allowbreak (07): 34-37.
-
-\bibitem[Gonzalez et~al.(2018)Gonzalez and Woods]{gamma_correction}
-Gonzalez R~C, Woods R~E.
-\newblock Gamma correction in digital image processing\allowbreak[J].
-\newblock Digital Image Processing, 2018: 156-189.
-
-\bibitem[Price et~al.(2013)Price, Storn, and Lampinen]{price2013differential}
-Price K, Storn R~M, Lampinen J~A.
-\newblock Differential evolution: a handbook for global permutation-based combinatorial optimization\allowbreak[J].
-\newblock Springer Science \& Business Media, 2013.
-
-\bibitem[王广志(2024)]{1024493909.nh}
-王广志.
-\newblock 基于ColorNet架构的比色传感器阵列用于猪肉新鲜度检测\allowbreak[D].
-\newblock 东北电力大学, 2024.
 
 \end{thebibliography}
