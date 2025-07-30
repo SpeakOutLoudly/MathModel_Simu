@@ -2,7 +2,8 @@
 
 \section[\hspace{-2pt}支撑材料总览]{{\heiti\zihao{-3} \hspace{-8pt}支撑材料总览}}
 
-本论文的所有支撑材料组织在\texttt{MathModel\_Code/}目录下，具体分类和说明如表\ref{table:supporting_materials}所示：
+% 本论文的所有支撑材料组织在\texttt{MathModel\_Code/}目录下，
+具体分类和说明如表\ref{table:supporting_materials}所示：
 
 \begin{table}[h!]
 \footnotesize
@@ -227,22 +228,22 @@
                                             if count >= max_routes:
                                                 break
                                             
-                                            route = {
-                                                'type': '2day',
-                                                'path': [s1, r1, s2, r2, s3, r3, s4],
-                                                'spots': [s1, s2, s3, s4],
-                                                'regions': [r1, r2, r3],
-                                                'lunch_regions': [r1, r3],  # 第1天午餐r1，第2天午餐r3
-                                                'night_regions': [r2],  # 第1天住宿r2
-                                                'cost': (self.cost_mat[s1, r1] + self.cost_mat[s2, r1] + 
-                                                         self.cost_mat[s2, r2] + self.cost_mat[s3, r2] + 
-                                                         self.cost_mat[s3, r3] + self.cost_mat[s4, r3]),
-                                                'time': (self.time_mat[s1, r1] + self.time_mat[s2, r1] + 
-                                                         self.time_mat[s2, r2] + self.time_mat[s3, r2] + 
-                                                         self.time_mat[s3, r3] + self.time_mat[s4, r3]),
-                                                'preference': sum([self.region_prefer[r1], self.region_prefer[r2], 
-                                                                   self.region_prefer[r3]]) + 4
-                                            }
+                                        route = {
+                                            'type': '2day',
+                                            'path': [s1, r1, s2, r2, s3, r3, s4],
+                                            'spots': [s1, s2, s3, s4],
+                                            'regions': [r1, r2, r3],
+                                            'lunch_regions': [r1, r3],  # 第1天午餐r1，第2天午餐r3
+                                            'night_regions': [r2],  # 第1天住宿r2
+                                            'cost': (self.cost_mat[s1, r1] + self.cost_mat[s2, r1] + 
+                                                     self.cost_mat[s2, r2] + self.cost_mat[s3, r2] + 
+                                                     self.cost_mat[s3, r3] + self.cost_mat[s4, r3]),
+                                            'time': (self.time_mat[s1, r1] + self.time_mat[s2, r1] + 
+                                                     self.time_mat[s2, r2] + self.time_mat[s3, r2] + 
+                                                     self.time_mat[s3, r3] + self.time_mat[s4, r3]),
+                                            'preference': sum([self.region_prefer[r1], self.region_prefer[r2], 
+                                                               self.region_prefer[r3]]) + 4
+                                        }
                                             self.routes_2day.append(route)
                                             count += 1
                                         if count >= max_routes:
