@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  31 JUL 2025 10:22
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.4.13)  31 JUL 2025 12:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1451,7 +1451,7 @@ Package fontspec Info:
 (fontspec)             - 'bold slanted small caps'  (b/scsl) with NFSS spec.:
 (fontspec)             <->"[TeXGyreTermesX-BoldSlanted.otf]/OT:script=latn;language=dflt;+tnum;+lnum;+smcp;mapping=tex-text;"
 
-Package translations Info: No language package found. I am going to use `english' as default language. on input line 46.
+Package translations Info: No language package found. I am going to use `english' as default language. on input line 47.
  (./main.aux (./contents/introduction.aux) (./contents/analysis.aux) (./contents/model_assumption.aux) (./contents/denotation.aux) (./contents/model_solution.aux
 
 LaTeX Warning: Label `subsec:3-model-build' multiply defined.
@@ -1462,26 +1462,26 @@ LaTeX Warning: Label `subsec:3-model-build' multiply defined.
 ) (./contents/conclusion.aux) (./contents/appendix.aux))
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 46.
-LaTeX Font Info:    ... okay on input line 46.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 47.
+LaTeX Font Info:    ... okay on input line 47.
 Package newfloat Info: Trying Plan B...
 Package newfloat Info: `float' package detected.
 Package caption Info: Begin \AtBeginDocument code.
@@ -1497,7 +1497,7 @@ Package: ltcaption 2021/01/08 v1.4c longtable captions (AR)
 )
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package bicaption Info: Main language is not set on input line 46.
+Package bicaption Info: Main language is not set on input line 47.
  (d:/Latex/texlive/2025/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2022-10-27 v0.13 Display of landscape pages in PDF
  (d:/Latex/texlive/2025/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
@@ -1507,7 +1507,7 @@ Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: dvipdfm (xetex) on input line 98.
 ))
-Package hyperref Info: Link coloring OFF on input line 46.
+Package hyperref Info: Link coloring OFF on input line 47.
  (./main.out) (./main.out)
 \@outlinefile=\write5
 \openout5 = `main.out'.
@@ -1549,12 +1549,12 @@ Package hyperref Info: Link coloring OFF on input line 46.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 
-Package chemgreek Info: Activating mapping `default' on line 46.
+Package chemgreek Info: Activating mapping `default' on line 47.
 
 (d:/Latex/texlive/2025/texmf-dist/tex/latex/translations/translations-basic-dictionary-english.trsl
 File: translations-basic-dictionary-english.trsl (english translation file `translations-basic-dictionary')
 )
-Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 46.
+Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 47.
 \c@lstlisting=\count493
  (./contents/cover.tex)
 File: contents/cover1.pdf Graphic file (type pdf)
@@ -1581,14 +1581,14 @@ File: contents/cover1.pdf Graphic file (type pdf)
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 12.045pt
-(hyperref)                removed on input line 64.
+(hyperref)                removed on input line 65.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \hskip 12.045pt
-(hyperref)                replaced by space on input line 64.
+(hyperref)                replaced by space on input line 65.
 
-Package newfloat Info: Setting Plan B file extension to `lof'... on input line 64.
+Package newfloat Info: Setting Plan B file extension to `lof'... on input line 65.
 
 Package fontspec Info: 
 (fontspec)             Could not resolve font "SimHei/BI" (it probably doesn't
@@ -1615,21 +1615,21 @@ Package fontspec Info:
 (fontspec)             - 'normal' (m/n) with NFSS spec.:
 (fontspec)             <->"SimHei/OT:script=hani;language=dflt;mapping=tex-text;"
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
 (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
  (d:/Latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 64.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 65.
  (d:/Latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 
 LaTeX Font Warning: Font shape `TU/SimHei(0)/b/n' undefined
-(Font)              using `TU/SimHei(0)/m/n' instead on input line 64.
+(Font)              using `TU/SimHei(0)/m/n' instead on input line 65.
 
 
 
@@ -2015,6 +2015,12 @@ Overfull \hbox (8.08229pt too wide) in paragraph at lines 298--298
 []|\TU/TeXGyreTermesX(0)/m/n/10.53937 R2,R3,R4,R2,R4| 
  []
 
+File: figures/tourism_optimization_clusters.png Graphic file (type bmp)
+<figures/tourism_optimization_clusters.png>
+Package hyperref Info: bookmark level for unknown figuresEN defaults to 0 on input line 308.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 
 
 
@@ -2027,15 +2033,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 309.
+(hyperref)                removing `\@ifnextchar' on input line 320.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 311.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 349.
+(hyperref)                removing `\@ifnextchar' on input line 322.
 
 
 
@@ -2049,7 +2051,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [12]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@ifnextchar' on input line 406.
+(hyperref)                removing `\@ifnextchar' on input line 360.
 
 
 
@@ -2061,7 +2063,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [13]
-Underfull \hbox (badness 10000) in alignment at lines 443--443
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 417.
+
+
+Underfull \hbox (badness 10000) in alignment at lines 454--454
 [][][][][] 
  []
 
@@ -2077,6 +2084,18 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [14]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[15]
 \openout2 = `contents/conclusion.aux'.
 
  (./contents/conclusion.tex
@@ -2118,7 +2137,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[15
+[16
 
 
 
@@ -2129,7 +2148,45 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 37.
 
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 45.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--51
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--57
+
+ []
+
+
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[17]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\@ifnextchar' on input line 58.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--64
+
+ []
+
 )
+Underfull \hbox (badness 10000) in paragraph at lines 65--127
+
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2138,7 +2195,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[16] (./main.bbl)
+[18] (./main.bbl)
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2147,7 +2204,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[17
+[19
 
 
 
@@ -2171,18 +2228,48 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 Package hyperref Info: bookmark level for unknown tablesEN defaults to 0 on input line 13.
 
-Underfull \hbox (badness 2735) in paragraph at lines 42--42
-[]|\TU/pcr/m/it/10.53937 data/origin/xlsx/B \TU/FangSong(0)/m/n/10.53937 题 附
+Overfull \hbox (2.34415pt too wide) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 code/run_optimization.py| 
  []
 
 
-Overfull \hbox (2.92381pt too wide) in paragraph at lines 42--42
+Overfull \hbox (21.7155pt too wide) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 code/tourism_optimization.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 Q1/optimization_result_
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 Q1/optimization_result_
+ []
+
+
+Overfull \hbox (2.92381pt too wide) in paragraph at lines 38--38
 \TU/pcr/m/it/10.53937 Training_Loss_Curve.png| 
  []
 
 
-Overfull \hbox (25.91019pt too wide) in paragraph at lines 42--42
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 Q1/optimization_result_
+ []
+
+
+Overfull \hbox (25.91019pt too wide) in paragraph at lines 38--38
 \TU/pcr/m/it/10.53937 ΔE2000_Error_Histogram.png| 
+ []
+
+
+Overfull \hbox (3.25055pt too wide) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 Q2/benefit_vs_expan.png| 
+ []
+
+
+Overfull \hbox (19.72357pt too wide) in paragraph at lines 38--38
+[]|\TU/pcr/m/it/10.53937 Q3/optimization_clusters.png| 
  []
 
 (d:/Latex/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -2190,10 +2277,14 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
 
 LaTeX Font Warning: Font shape `TU/pcr/b/n' undefined
-(Font)              using `TU/pcr/m/n' instead on input line 60.
+(Font)              using `TU/pcr/m/n' instead on input line 56.
 
 LaTeX Font Info:    Font shape `U/cmsy/m/n' will be
-(Font)              scaled to size 9.03374pt on input line 60.
+(Font)              scaled to size 9.03374pt on input line 56.
+
+LaTeX Font Warning: Font shape `TU/FangSong(0)/m/it' undefined
+(Font)              using `TU/FangSong(0)/m/n' instead on input line 67.
+
 
 
 
@@ -2203,34 +2294,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[18
+[20
 
 
 
 ]
-
-LaTeX Font Warning: Font shape `TU/FangSong(0)/m/it' undefined
-(Font)              using `TU/FangSong(0)/m/n' instead on input line 71.
-
-
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[19]
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 12.64723pt, for example:
-(fancyhdr)                \setlength{\headheight}{12.64723pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
-
-[20]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2249,11 +2317,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [22]
-Overfull \hbox (20.88705pt too wide) in paragraph at lines 245--246
-[][][] 
- []
-
-
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2272,6 +2335,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [24]
+Overfull \hbox (20.88705pt too wide) in paragraph at lines 241--242
+[][][] 
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2568,7 +2636,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
-[57])
+[57]
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2578,6 +2646,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
 
 [58]
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[59])
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 12.64723pt, for example:
+(fancyhdr)                \setlength{\headheight}{12.64723pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-0.64723pt}.
+
+[60]
 \tf@thm=\write6
 \openout6 = `main.thm'.
 
@@ -2600,15 +2686,15 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 438C9455AD9E9FDBD11C3B35DB1321D4;4359.
+(rerunfilecheck)             Checksum: 9DFE43247C7CF559222EC45FA1CD0AE0;4757.
  ) 
 Here is how much of TeX's memory you used:
- 44628 strings out of 473832
- 982646 string characters out of 5730404
- 1915930 words of memory out of 5000000
+ 44629 strings out of 473832
+ 982311 string characters out of 5730404
+ 1932800 words of memory out of 5000000
  66787 multiletter control sequences out of 15000+600000
  573897 words of font info for 172 fonts, out of 8000000 for 9000
  1349 hyphenation exceptions out of 8191
- 107i,18n,131p,1503b,2627s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 107i,18n,131p,1503b,2601s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.pdf (59 pages).
+Output written on main.pdf (61 pages).

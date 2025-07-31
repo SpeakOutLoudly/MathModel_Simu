@@ -5,6 +5,7 @@
 \documentclass%
 	[type=master, bilinguallist=apart, 
 	printmode=oneside, blindtrail=true]{cquthesis}%
+	
 % 可用选项：
 % type=[bachelor|master|doctor],      % 必选，毕业论文类型，以下项目不填时为默认
 % liberalformat,                      % 可选，仅适用本科生，使用文学类论文标题格式，默认未打开
@@ -31,7 +32,7 @@
 % 定义所有的图片文件在 figures 子目录下
 \graphicspath{{figures/}}
 
-% 定义数字圆
+% 定义数字圆 
 \usepackage{tikz}
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{
             \node[shape=circle,draw,inner sep=1pt] (char) {\small #1};}}

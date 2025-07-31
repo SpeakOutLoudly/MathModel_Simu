@@ -2,47 +2,43 @@
 
 \section[\hspace{-2pt}支撑材料总览]{{\heiti\zihao{-3} \hspace{-8pt}支撑材料总览}}
 
-% 本论文的所有支撑材料组织在\texttt{MathModel\_Code/}目录下，
-具体分类和说明如表\ref{table:supporting_materials}所示：
+本论文的所有支撑材料组织在\texttt{Materials/}目录下，具体分类和说明如表\ref{table:supporting_materials}所示：
 
 \begin{table}[h!]
-\footnotesize
-\setstretch{1.1}
-\captionsetup{font={small, stretch=1.512}}
-\centering
-\bicaption[支撑材料分类说明]{支撑材料分类说明。}[Classification of Supporting Materials]{Classification of Supporting Materials.}
-\begin{tabularx}{\textwidth}{p{1.8cm}p{4.2cm}X}
-\toprule
-材料类型 & 文件路径 & 说明 \\
-\midrule
-\multirow{3}{1.8cm}{实现代码} & \texttt{B/p1/p1.py} & 问题1：BT.2020到sRGB色域映射优化 \\
- & \texttt{B/p2/p2.py} & 问题2：四通道到五通道神经网络转换 \\
- & \texttt{B/p3/p3.py} & 问题3：LED显示器颜色校正算法 \\
-\midrule
-\multirow{4}{1.8cm}{原始数据} & \texttt{data/origin/xlsx/B题附件：RGB数值.xlsx} & 题目提供的原始RGB数值 \\
- & \texttt{data/preprocess/}\newline\texttt{RedPicture.xlsx} & 预处理后的红色基图数据 \\
- & \texttt{data/preprocess/}\newline\texttt{GreenPicture.xlsx} & 预处理后的绿色基图数据 \\
- & \texttt{data/preprocess/}\newline\texttt{BluePicture.xlsx} & 预处理后的蓝色基图数据 \\
-\midrule
-\multirow{9}{1.8cm}{结果图像} & \texttt{results/p1/DE2000.png} & 问题1：50次优化$\Delta E_{00}$分布 \\
- & \texttt{results/p1/色度.png} & 问题1：CIE1931色度图对比 \\
- & \texttt{results/p1/面积Loss.png} & 问题1：色域面积差异分析 \\
- & \texttt{results/p2/}\newline\texttt{Training\_Loss\_Curve.png} & 问题2：神经网络训练损失曲线 \\
- & \texttt{results/p2/}\newline\texttt{ΔE2000\_Error\_Histogram.png} & 问题2：色差误差分布直方图 \\
- & \texttt{results/p2/CDF.png} & 问题2：误差累积分布函数 \\
- & \texttt{results/p2/Sample.png} & 问题2：样本预测效果展示 \\
- & \texttt{results/p2/色度图.png} & 问题2：多基色色域可视化 \\
- & \texttt{results/p3/\{R,G,B\}.pdf} & 问题3：RGB三原色校正对比图 \\
-\midrule
-\multirow{2}{1.8cm}{环境配置} & \texttt{env.txt} & Python依赖包列表 \\
- & \texttt{mathmodel\_env.yaml} & Conda环境配置文件 \\
-\midrule
-说明文档 & \texttt{README.md} & 项目使用说明和运行指南 \\
-\bottomrule
-\end{tabularx}
-\label{table:supporting_materials}
-\end{table}
-
+    \footnotesize
+    \setstretch{1.1}
+    \captionsetup{font={small,stretch=1.512}}
+    \centering
+    \bicaption[支撑材料分类说明]{支撑材料分类说明。}%
+             [Classification of Supporting Materials]{Classification of Supporting Materials.}
+    \begin{tabularx}{\textwidth}{p{1.8cm}p{4.2cm}X}
+      \toprule
+      材料类型 & 文件路径 & 说明 \\
+      \midrule
+      % ---------------- 实现代码 ----------------
+      \multirow{3}{1.8cm}{实现代码} % 共有 4 行，* 表示自适应宽度
+        & \texttt{code/run\_optimization.py} & 执行入口脚本 \\
+        & \texttt{code/tourism\_optimization.py} & 问题一、问题三主要程序 \\
+        & \texttt{code/Q2\_k\_means.py} & 问题二：K-means 算法代码 \\
+      \midrule
+      % ---------------- 结果材料 ----------------
+      \multirow{7}{1.8cm}{结果材料} % 共有 8 行
+        & \texttt{终端输出.docx} & \texttt{run\_optimization.py} 终端日志 \\
+        & \texttt{Q1/optimization\_result\_费用优先型.txt} & 问题 1：费用优先型解 \\
+        & \texttt{Q1/optimization\_result\_均衡型.txt}\newline%
+          \texttt{Training\_Loss\_Curve.png} & 问题 1：均衡型解 \\
+        & \texttt{Q1/optimization\_result\_时间优先型.txt}\newline%
+          \texttt{ΔE2000\_Error\_Histogram.png} & 问题 1：时间优先型解 \\
+        & \texttt{Q2/benefit\_vs\_expan.png} & 问题 2：收益-扩张曲线 \\
+        & \texttt{Q3/clustering\_results.txt} & 问题 3：聚类结果（文本） \\
+        & \texttt{Q3/optimization\_clusters.png} & 问题 3：聚类结果可视化 \\
+      \midrule
+      说明文档 & \texttt{README.txt} & 项目环境与运行指南 \\
+      \bottomrule
+    \end{tabularx}
+    \label{table:supporting_materials}
+  \end{table}
+  
 \lstset{
     basicstyle=\ttfamily\footnotesize,
     numbers=left,
