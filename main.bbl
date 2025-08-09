@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{0}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{#1}
 \expandafter\ifx\csname urlstyle\endcsname\relax\else
@@ -10,26 +10,5 @@
   \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
   \let\eprint\href
 \fi
-
-\bibitem[韩艳\ 等(2018)韩艳, 杨光, 武鑫森, 张思涵, and 李婉莹]{BJGD201812009}
-韩艳, 杨光, 武鑫森, 等.
-\newblock 考虑游客拥挤感知的旅游线路优化设计\allowbreak[J].
-\newblock 北京工业大学学报, 2018, 44\allowbreak (12): 1537-1546.
-
-\bibitem[任池(2024)]{1024525101.nh}
-任池.
-\newblock 基于异质性偏好、拥挤程度和环境因素的旅游线路设计研究\allowbreak[D].
-\newblock 西南财经大学, 2024.
-
-\bibitem[李婧璇\ 等(2024)李婧璇, 禹文豪, 黄雅雅, and 吴啸]{CHRK202403007}
-李婧璇, 禹文豪, 黄雅雅, 等.
-\newblock 基于多源大数据的城市旅游目的地吸引力评价研究——以武汉市为例\allowbreak[J/OL].
-\newblock 时空信息学报, 2024, 31\allowbreak (03): 386-396.
-\newblock DOI: \doi{10.20117/j.jsti.202403009}.
-
-\bibitem[常亮\ 等(2019)常亮, 孙文平, 张伟涛, 宾辰忠, and 古天龙]{ZNXT201901008}
-常亮, 孙文平, 张伟涛, 等.
-\newblock 旅游路线规划研究综述\allowbreak[J].
-\newblock 智能系统学报, 2019, 14\allowbreak (01): 82-92.
 
 \end{thebibliography}

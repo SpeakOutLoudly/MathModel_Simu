@@ -46,419 +46,264 @@
 %\bicaption[不同基色图像的伽马参数估计结果]{不同基色图像的伽马参数估计结果。}[Gamma parameter estimation results for different primary color images]{Gamma parameter estimation results for different primary color images.}    % 中英文标题
 
 
-\section[\hspace{-2pt}问题一：路旅游方案设计]{{\heiti\zihao{-3} \hspace{-8pt}问题一：路旅游方案设计}}\label{section3: 问题1：路旅游方案设计}
+\section[\hspace{-2pt}问题一：农作物种植优化方案设计]{{\heiti\zihao{-3} \hspace{-8pt}问题一：农作物种植优化方案设计}}\label{section3: 问题1：农作物种植优化方案设计}
 
 \subsection[\hspace{-2pt}模型建立与求解]{{\heiti\zihao{4} \hspace{-8pt}模型建立与求解}}\label{section3: 模型建立与求解}
 
-对于此问题，我们首先通过Floyd‑Warshall算法补全邻接矩阵，得到任意两点之间的最短距离。这样我们就可以得到任意区域到任意景点的交通费用和交通时间。此外，我们还需要考虑到旅游信息（住宿、美食、景点等）对方案的影响。既要考虑其对方案满意度的增益，也应当考虑到可容纳人数的限制。\cite{ZNXT201901008}以此为基础，我们进行以下建模：
+对于此问题，我们首先需要通过设定合理的决策变量，来确定每个地块在每个年份和季节种植的作物面积。每个地块的种植方案需考虑土壤轮作、作物间的轮换以及豆类作物的种植要求。我们还需要加入作物销售限制、耕地面积限制等约束条件，以确保种植计划合理、可行。根据这些条件，我们建立了以下的数学模型：
 
-\textbf{景点收益：}由于缺乏具体景点评分数据，我们假设每个景点具有相近的吸引力价值，即此处不加入游客对景点的偏好因素。$P_{max}$表示某一类型的方案的最大满意度（即总是选择游客喜好程度最高的区域3）。
-
-\begin{equation}
-  \begin{aligned}
-  \text{Pref}^{(d_{p})}_{max}(type)=\begin{cases}
-  9\times 1+2=11, & \text{（1日）}\\
-  9\times 3+4=31, & \text{（2日）}\\
-  9\times 5+6=51, & \text{（3日）}
-  \end{cases}
-  \end{aligned}
-  \end{equation}
-
-以上方程为景区最大收益函数。为了减少数值对模型计算的影响，我们对三种收益进行归一化处理。
-
-\textbf{区域收益：}套餐$p$涉及到的区域的用餐以及住宿体验。根据题目数据，我们将区域喜好度评分$P_{R_{j}}$作为游客在该区域用餐/住宿获得的满意度。如果套餐跨多日，可能涉及多个不同的区域，则将相应区域的偏好分累计。若在同一天中午和晚上都在同一$R_{j}$区域，则游客在该天对区域$R_{j}$的体验包括午餐和晚餐+住宿，为方便建模并突出问题的重心，我们采用叠加的方式计算区域满意度。
-
-\textbf{交通的时间与费用成本：}每套旅游方案中的交通费用和时间开销会降低满意度。我们采用函数$Cost(p)$来评价一个方案中的所有交通费用，用$Time(p)$来表示所有时间开销。此外我们为其增加了权重$w_{\text{cost}}, w_{\text{time}}$，以此代表不同套餐的倾向，用以区分经济优先还是时间优先。
+\textbf{目标函数：}  
+为了最大化农业经济效益，我们的目标函数是将所有作物的总收益最大化。作物的收益由其亩产量、市场价格和种植面积决定，同时减去种植成本。公式如下：
 
 \begin{equation}
-\begin{aligned}
-  \text{Cost}(p) = \sum_{(S_i,R_j)\in p}{d(S_i,R_j)}
-\end{aligned}
+  \text{Maximize}\quad Z = \sum_{t=2024}^{2030} \sum_{m=1}^{41} \sum_{i=1}^{34} \sum_{s=1}^{2} \left( P_{m,s} \cdot Y_{m,s} \cdot x_{i,m,t,s} - C_{m,s} \cdot x_{i,m,t,s} \right)
+\end{equation}
+
+其中，$P_{m,s}$为第 $m$ 类作物在季节 $s$ 的单价；$Y_{m,s}$为第 $m$ 类作物在季节 $s$ 的亩产量；$C_{m,s}$为第 $m$ 类作物在季节 $s$ 的种植成本；$x_{i,m,t,s}$为第 $i$ 块地在第 $t$ 年第 $s$ 季节种植第 $m$ 类作物的面积。
+
+\textbf{豆类作物种植面积要求：}  
+根据题目要求，乡村露天地块每年必须种植至少401亩豆类作物，大棚需要种植至少4亩豆类作物。我们定义豆类作物集合 $V_b$，并添加以下约束：
+
+\begin{equation}
+\sum_{m \in V_b} \sum_{i=1}^{34} x_{i,m,t} = \frac{1}{3} \cdot 1201 \quad \forall t
 \end{equation}
 
 \begin{equation}
-  \begin{aligned}
-    \text{Time}(p) = \sum_{(S_i,R_j)\in p}{t(S_i,R_j)}
-  \end{aligned}
+\sum_{m \in V_b} \sum_{j=1}^{16} x_{j,m,t} + \sum_{m \in V_b} \sum_{k=1}^{4} x_{k,m,t} = 4 \quad \forall t
 \end{equation}
-  
 
-
-
-总的某方案$p$的满意度函数如下：
+\textbf{作物轮作约束：}  
+同一块地不能连续重茬种植相同作物。为此，引入二元变量 $z_{i,m,t}$，当第 $i$ 块地在第 $t$ 年种植第 $m$ 类作物时，$z_{i,m,t} = 1$，否则 $z_{i,m,t} = 0$。因此，约束条件为：
 
 \begin{equation}
-\begin{aligned}
-  u_p \;=\; w_{\text{pref}}\frac{\text{Pref}(p)}{\text{Pref}_{\max}^{(d_p)}} \;-\; w_{\text{cost}}\frac{\text{Cost}(p)}{\max\{\text{Cost}(q):q\in \mathcal{P}\}} \;-\; w_{\text{time}}\frac{\text{Time}(p)}{\max\{\text{Time}(q):q\in \mathcal{P}\}},
-\end{aligned}
+z_{i,m,t} + z_{i,m,t+1} \leq 1 \quad \forall i, \forall m, \forall t
 \end{equation}
 
-\textbf{最大化函数：}
-\begin{equation}
-  \begin{aligned}
-    Z = \sum_{p\in \mathcal{P}}u_{p}\cdot x_{p}.
-  \end{aligned}
-\end{equation}
-
-约束条件如下：
-
-\noindent\textbf{1.景点接待容量限制：}
-各景点在各个半天时段的接待总人数不得超限。由于早午两段和最多3天行程共有6个半天时段，模型将假设景点容量可在不同时段重复利用。对每个景点 $i\in S$ 有：
+\textbf{耕地面积限制：}  
+每年各地块的种植总面积不能超过其可用面积。设 $A_{f_{all}}$ 为第 $i$ 块地的最大种植面积，约束条件为：
 
 \begin{equation}
-  \begin{aligned}
-    \sum_{p\in \mathcal{P}}\delta_{i,p}\cdot x_{p} \leq 6\,C_{S_{i}},\quad i=1,2\dots ,6,
-  \end{aligned}
+\sum_{m=1}^{41} x_{i,m,t} \leq A_{f_{all}} \quad \forall i, \forall t
 \end{equation}
-其中$\delta_{i,p}=1$当路线$p$包含景点$i$（即游客在某一时段游览了景点$i$），否则$\delta_{i,p}=0$。
 
-\noindent\textbf{2.午餐餐厅容量约束：}
-每个区域的午餐接待能力（每天中午）也限制了路线分配。类似地，如果认为最多3个中午时段可复用，则对每个区域 $j\in R$：
+\textbf{作业便利性约束：}  
+每块地的作物种植数有最大数量限制，即每个地块种植的作物种类数量不能超过 $N_{\text{max}}$。公式为：
 
 \begin{equation}
-  \begin{aligned}
-    \sum_{p\in \mathcal{P}}\theta_{j,p}\cdot x_{p} \leq 3\,L_{R_{j}},\quad j=1,2,\dots ,6,
-  \end{aligned}
-\end{equation}
-其中$theta_{j,p}$代表路线$p$在中午曾安排于区域$j$就餐次数（一日游有1次午餐、三日游有3次午餐机会，但可能某些路线会重复去某一区域）。代码中简化为每个区域午餐总游客$\le C^{\text{lunch}}_j$，相当假定所有行程共用一个中午时段容量，这在行程跨多日的情况下略趋保守。
-
-\noindent\textbf{3.晚餐及住宿容量约束：}
-每个区域用于晚餐和住宿的容量在不同夜晚也可重复利用。三日游行程最多涉及2晚，故每区域最多2个夜晚可安排住宿。对每个区域 $j\in R$：
-\begin{equation}
-  \begin{aligned}
-    \sum_{p\in \mathcal{P}}\phi_{j,p}\cdot x_p \;\le\; 2\,C^{\text{night}}_j, \quad j=1,\dots,6,
-  \end{aligned}
+\sum_{m=1}^{41} z_{i,m,t} \leq N_{\text{max}} \quad \forall i, \forall t
 \end{equation}
 
-其中$\phi_{j,p}$为路线$p$在夜晚留宿于区域$j$的次数（二日游路线有1晚、三日游有2晚，一般假定同一线路不重复入住同一酒店区域）。
+\textbf{求解过程}
 
-\noindent\textbf{4.游客总数约束：}
-根据预期需求，分别规定各类行程分配的总游客数。例如，设定选择一日游的游客总数为$N_{1}$人、二日游$N_{2}$人、三日游$N_{3}$人。则对每一种行程类型分别有：
-\begin{equation}
-  \begin{aligned}
-    \sum_{p\in P_{1\text{day}}}x_p = N_{1},\qquad \sum_{p\in P_{2\text{day}}}x_p = N_{2},\qquad \sum_{p\in P_{3\text{day}}}x_p = N_{3}.    
-  \end{aligned}
-\end{equation}
+\textbf{输入数据：}  
+\begin{itemize}
+    \item 作物的预期销售量 $D_{m,s}$。
+    \item 每种作物的单价 $P_{m,s}$，亩产量 $Y_{m,s}$，种植成本 $C_{m,s}$。
+    \item 各地块的可用面积 $A_{f_{all}}$，以及每块地的作物最小种植面积限制 $\delta$。
+\end{itemize}
 
-代码实现中分别令一日游、二日游总游客数为30,000，三日游为20,000。
+\textbf{模型求解方法：}  
+采用混合整数线性规划（MILP）方法求解此优化问题。具体步骤如下：
 
-约束处理完成后，我们将采用枚举的方式得到一日游、二日游等的所有可能方案。再将其加入到MILP模型中。结合遗传算法选择高质量路线，并采用启发式规则进行路线多样化拓展。最终得到最合适的旅游路线。
+\begin{itemize}
+    \item 使用求解器（如 CPLEX 或 Gurobi）解决模型中的线性约束和目标函数。
+    \item 对于每个年度 $t$，按照最大化收益的目标，计算每个地块的作物种植面积分配。
+    \item 考虑作物的销售限制、作物轮作约束以及豆类作物种植面积要求，确保在求解过程中遵循所有约束。
+\end{itemize}
 
-\subsection[\hspace{-2pt}问题一结果分析]{{\heiti\zihao{4} \hspace{-8pt}问题一结果分析}}\label{section4: 问题一结果分析}
-
-根据$w_{cost}$和$w_{time}$的不同权重配置，我们可以设置不同权重，得到不同侧重点的旅游方案。本论文设置了三种情况，并对优化结果进行了详细分析。
-
-\textbf{均衡型（费用权重=0.5，时间权重=0.5）：}
-
-均衡型配置追求费用和时间的平衡优化。实验结果显示：一日游方案成功分配3万游客到2条最优路线，平均满意度达到0.47；二日游方案分配3万游客到4条路线，总费用302.7万元，总时间5541万分钟，平均满意度0.39；三日游方案分配2万游客到4条路线，总费用355.06万元，平均满意度0.34。该配置在各项指标间取得了良好的平衡，适合大多数游客的需求。
-
-\textbf{费用优先型（费用权重=0.7，时间权重=0.3）：}
-
-费用优先型配置更注重控制旅游成本。对比分析发现：在一日游方案中，费用优先型与均衡型结果完全一致，说明一日游路线已达到成本最优；二日游方案中，总费用降低至292.92万元，相比均衡型节省了9.78万元（降幅3.2%），但时间成本略有增加至5745万分钟；三日游方案表现最为突出，总费用大幅降低至341.32万元，相比均衡型节省13.74万元（降幅3.9%），同时平均满意度还提升至0.36。这表明费用优先型配置能够有效控制成本，特别适合预算敏感的游客群体。
-
-\textbf{时间优先型（费用权重=0.3，时间权重=0.7）：}
-
-时间优先型配置侧重于减少旅行时间。结果显示：一日游和二日游方案与均衡型完全相同，表明在这两种方案中时间已达到最优配置；三日游方案中，虽然总费用略有增加至367.6万元，但时间安排更为紧凑高效。值得注意的是，时间优先型在路线选择上呈现出不同的偏好模式，优先选择时间效率更高的景点组合和区域路径，适合时间有限但希望充分体验的游客。
-
-\textbf{综合比较分析：}
-
-通过三种配置的对比分析可以发现：(1)一日游方案在三种配置下结果一致，说明短期旅游路线的优化空间有限，已达到全局最优；(2)二日游方案中费用优先型在成本控制方面具有明显优势，适合预算约束较强的情况；(3)三日游方案显示出最大的优化弹性，不同权重配置产生显著差异，为不同需求的游客提供了多样化选择；(4)所有配置均成功实现了大规模游客分流，验证了模型的实用性和有效性。这些结果为旅游管理部门制定差异化的旅游产品策略提供了科学依据。
+\textbf{结果输出：}  
 
 
+\section[\hspace{-2pt}问题二：农作物种植优化方案设计]{{\heiti\zihao{-3} \hspace{-8pt}问题二：农作物种植优化方案设计}}\label{section3: 问题2：农作物种植优化方案设计}
 
-\section[\hspace{-2pt}问题二：方案优化]{{\heiti\zihao{-3} \hspace{-8pt}问题二：方案优化}}\label{section3: 问题2：方案优化}
+\subsection[\hspace{-2pt}模型建立与求解]{{\heiti\zihao{4} \hspace{-8pt}模型建立与求解}}\label{section3: 模型建立与求解}
 
-\subsection[\hspace{-2pt}问题分析与建模目标]{{\heiti\zihao{4} \hspace{-8pt}问题分析与建模目标}}\label{section2: 问题分析与建模目标}
+对于此问题，我们首先需要通过设定合理的决策变量，来确定每个地块在每个年份和季节种植的作物面积。每个地块的种植方案需考虑作物的销售限制、亩产量、种植成本、销售价格的变化，并考虑气候等不确定因素的影响。我们还需要加入作物销售限制、耕地面积限制等约束条件，以确保种植计划合理、可行。根据这些条件，我们建立了以下的数学模型：
 
-根据问题分析，我们设计了如下的距离函数，综合考虑了方案间的景点、路线、区域等相似度，将重复性较强的方案合并。由于景点和区域皆为符号度量，因此二者都采用了Jaccard相似度。类型相似度用以判断旅游天数是否相同，可以保证同一聚类中心皆为同一天数。余下的偏好相似度、成本相似度和时间相似度都采用了欧氏距离，成本相似度采用了欧氏距离，时间相似度采用了欧氏距离。
-
-\noindent\textbf{1.景点相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},S} = \frac{|\underset{S\in p_i}{\bigcup}\cap \underset{S\in p_j}{\bigcup}|}{|\underset{S\in p_i}{\bigcup}\cup \underset{S\in p_j}{\bigcup}|}
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{2.类型相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},Day} = \begin{cases}
-      1, & \text{若}d_{p_i}=d_{p_j}\\
-      0, & \text{否则}
-    \end{cases}
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{3.区域相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},R} = \frac{|\underset{R\in p_i}{\bigcup}\cap \underset{R\in p_j}{\bigcup}|}{|\underset{R\in p_i}{\bigcup}\cup \underset{R\in p_j}{\bigcup}|}
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{4.偏好相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},P} = 1-\frac{|\text{Pref}(p_{i})-\text{Pref}(p_{j})|}{\text{max}(\text{Pref}(p_{i}),\text{Pref}(p_{j}))}
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{5.成本相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},C} = 1-\frac{|\text{Cost}(p_{i})-\text{Cost}(p_{j})|}{\text{max}(\text{Cost}(p_{i}),\text{Cost}(p_{j}))}
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{6.时间相似度：}
-\begin{equation}
-  \begin{aligned}
-    \text{Simu}_{p_{i},p_{j},T} = 1-\frac{|\text{Time}(p_{i})-\text{Time}(p_{j})|}{\text{max}(\text{Time}(p_{i}),\text{Time}(p_{j}))}
-  \end{aligned}
-\end{equation}
-
-定义好以上相似度后，就可以计算两个方案之间的加权距离。
+\textbf{目标函数：}  
+为了最大化农业经济效益，我们的目标函数是将所有作物的总收益最大化。作物的收益由其亩产量、市场价格和种植面积决定，同时减去种植成本。公式如下：
 
 \begin{equation}
-  \begin{aligned}
-    D(p_{i},p_{j}) = \sum_{k\in \text{Temp}}^{6}w_{k}\cdot\text{Simu}_{p_{i},p_{j},k},\quad \text{Temp}=\{S,Day,R,P,C,T\}
-  \end{aligned}
+  \text{Maximize}\quad Z = \sum_{t=2024}^{2030} \sum_{m=1}^{41} \sum_{i=1}^{34} \sum_{s=1}^{2} \left( P_{m,s} \cdot Y_{m,s} \cdot x_{i,m,t,s} - C_{m,s} \cdot x_{i,m,t,s} \right)
 \end{equation}
 
-以上因素综合考虑到不同旅行方案在景点、区域、偏好等多个方面的相似度，可以得到不同旅行方案之间的距离。在完成“旅游方案相似度”加权距离函数的数学建模后，下一步便可对所有候选路线实施 K‑means 聚类。
+其中，$P_{m,s}$为第 $m$ 类作物在季节 $s$ 的单价；$Y_{m,s}$为第 $m$ 类作物在季节 $s$ 的亩产量；$C_{m,s}$为第 $m$ 类作物在季节 $s$ 的种植成本；$x_{i,m,t,s}$为第 $i$ 块地在第 $t$ 年第 $s$ 季节种植第 $m$ 类作物的面积。
 
-% 基于旅游方案相似度的加权距离函数建模完成后，即可进行K均值聚类。算法会尝试不同的K值，并根据簇内平方和选择最优的K值作为最终的结果。
+\textbf{随机因素：}  
+为考虑市场、气候等不确定性因素的影响，我们引入随机符号以模拟作物的销售量、亩产量、种植成本和价格的波动。随机增量符号定义如下：
 
-% 当要求旅游套餐种类总数不超过10种时，需要对上述模型进行适应性修改。原模型在追求最大满意度下，可能启用许多不同路线方案来绕开局部容量瓶颈，从而方案种类较多。如果限制套餐类型数$\le10$，模型必须在满意度与管理简化之间折中。我们做出了如下调整：
+\begin{itemize}
+    \item $\delta^{D}_{m,t}$：需求（销量）变化，遵循 $\mathcal{U}(0.05, 0.10)$ 对于小麦和玉米，其他作物为 $\mathcal{U}(-0.05, 0.05)$；
+    \item $\delta^{Y}_{m,t}$：亩产量变化，遵循 $\mathcal{U}(-0.10, 0.10)$；
+    \item $\delta^{C}_{m,t}$：成本变化，遵循 $\mathcal{U}(-0.02, 0.02)$；
+    \item $\delta^{P}_{m,t}$：单价变化，粮食类为 $\mathcal{U}(-0.02, 0.02)$，蔬菜类作物有5%的正增长，食用菌的单价变化为负，羊肚菌固定每年下降5%。
+\end{itemize}
 
-% \noindent\textbf{加入套餐数量约束:}增加约束$\displaystyle\sum_{p\in P} \le 10$，限制被选用的不同路线方案数不超过10种。其中为0-1变量，表示方案$p$是否被采用。并引入逻辑约束$x_p \le N_{\text{total}};$（或大$M$法）将$x_p$与关联。这样仅当$y=1$时，$x_p$可取正值，否则该路线不分配游客。此调整实质上将线性规划扩展为混合整数规划，有助于直接在求解过程中控制方案种类数上限。
+\textbf{需求与收益计算：}  
+每个场景下的需求、单产、成本和价格分别由随机增量计算得出，具体为：
 
-% \noindent\textbf{精选候选路线集:}在模型求解前预先筛选和精简路线集合$P$，只保留若干“优选”套餐候选。比如，根据单条路线的满意度系数$u_p$对候选方案排序，选取满意度高且覆盖面广的前若干条路线进入优化。原模型生成的路线非常多（一日游$6\times5\times6=180$种，二日游上限$10^4$种，三日游经遗传算法+启发式生成5000种)，有许多方案实际贡献的游客数很小甚至为0。我们可剔除明显次优或冗余的方案，例如去除行程过长费用偏高而偏好分较低的组合，或者对行程相似且收益接近的方案只保留其中一种。这相当于在不增加过多成本的前提下人工设定候选集精简至$\le10$条路线，然后在此基础上重新优化分配。这种路线筛选（如按满意度排序取Top 10）和聚类归并的方法可极大减少方案种类，同时尽量保证总满意度接近原最优值。
+\begin{itemize}
+    \item $D_{m,t}^{(\omega)}$：第 $\omega$ 场景下的需求；
+    \item $Y_{m,t}^{(\omega)}$：第 $\omega$ 场景下的亩产量；
+    \item $C_{m,t}^{(\omega)}$：第 $\omega$ 场景下的成本；
+    \item $P_{m,t}^{(\omega)}$：第 $\omega$ 场景下的单价。
+\end{itemize}
 
-% \noindent\textbf{优先级调度与容量放宽:}在仅允许提供有限几种套餐时，可考虑适当调整对容量约束的处理，确保主要景点和区域得到利用。例如，将重点偏好的景点设计为\**固定线路**，优先占用一定游客量，然后对剩余游客采用次优线路。在代码实现层面，可以对生成的候选路线按照偏好得分或单位满意度收益排序，优先选取少数几条高效路线分配游客直到触及某一容量约束，再引入下一优方案。这种贪心分配过程可以模拟人工规划几种典型套餐的思路：例如优先设计几条涵盖热门景区且总体花费合理的线路，再视剩余接待资源补充其他路线，从而将总套餐数控制在上限之内。
+\textbf{约束条件：}  
+在优化过程中，我们需要满足以下约束条件：
 
-% 综上，当限制套餐总数不超过10种时，模型需要从“穷尽所有可能组合求全局最优”转变为“在有限方案中求近优”。这要求在模型中增加**组合选择的决策变量和约束**，或采用启发式策略筛选方案。通过上述调整，既能满足管理方便的要求，又尽可能兼顾游客满意度和资源利用的均衡。模型的结构与求解思路具有一定灵活性：无论是通过加入$y$变量实现严格的种类约束，还是通过缩减候选路线集来隐含满足要求，都体现了对原优化模型的适应性改进。
-
-\subsection[\hspace{-2pt}模型求解和结果分析]{{\heiti\zihao{4} \hspace{-8pt}模型求解和结果分析}}\label{section2: 模型求解和结果分析}
-
-具体流程如下：首先，以距离函数 $D(\cdot,\cdot)$ 为度量，对给定的 K 值（簇数）运行多次随机初始化的 K‑means++，获得每个 k 下的最小 簇内平方和。随后，将 k 在预设范围 $3,\dots ,6$ 内逐一取值。最终选择使指标综合最优的 $K$。确定 $K$ 后，以其为簇数重新运行 K‑means，并选取每个簇中净收益最高或代表性最强的方案，形成至多 10 种、覆盖多样化场景且经济效益最优的扩容套餐。
-
-% 以下是K-means聚类算法流程：
-\begin{algorithm}[H]\small
-  \setstretch{1.245}
-  \renewcommand{\algorithmcfname}{算法}
-  \caption{旅游路线相似度聚类算法}\label{alg:kmeans_route}
-
-  \KwIn{可行路线集合 $\mathcal R$（已转为特征向量）；候选聚类数 $\mathcal K=\{2,3,4,5,6\}$}
-  \KwOut{最优聚类数 $k^*$、最终模型 $\mathcal M^*$ 及聚类统计 $\mathcal C$}
-
-  \textbf{步骤1：初始化}\;
-  $k^* \leftarrow \text{first}(\mathcal K)$；\;
-  $\text{bestInertia}\leftarrow+\infty$\;
-
-  \textbf{步骤2：遍历候选聚类数}\;
-  \ForEach{$k\in\mathcal K$}{
-      $\mathcal M \leftarrow \texttt{KMeans.fit}(\mathcal R,k)$\;
-      \If{$\mathcal M.\texttt{inertia\_}<\text{bestInertia}$}{
-          $\text{bestInertia}\leftarrow\mathcal M.\texttt{inertia\_}$\;
-          $k^*\leftarrow k$\;
-      }
-  }
-
-  \textbf{步骤3：终极聚类与统计}\;
-  $\mathcal M^* \leftarrow \texttt{KMeans.fit}(\mathcal R,k^*)$\;
-  $\mathcal C \leftarrow \texttt{GetClusterInfo}(\mathcal M^*,\mathcal R)$\;
-
-  \textbf{步骤4：输出结果}\;
-  \Return $(k^*,\mathcal M^*,\mathcal C)$\;
-\end{algorithm}
-
-通过K均值算法，我们得到了最优聚类数为6，其中每个簇中净收益最高的方案只保留一种，最终得到了6种旅游方案。以下是方案的详细信息：
-
-\begin{table}[H]\small
-  \centering
-  \caption{K\,means 聚类结果汇总（$k=6$，路线总数 11，惯性值 1.178）}
-  \begin{tabularx}{\textwidth}{>{\centering\arraybackslash}m{0.6cm}
-                                  >{\centering\arraybackslash}m{1cm}
-                                  >{\centering\arraybackslash}m{1cm}
-                                  >{\centering\arraybackslash}m{1cm}
-                                  >{\centering\arraybackslash}m{1cm}
-                                  X
-                                  X}
-    \toprule
-    \textbf{簇} & \textbf{成本/元} & \textbf{时间/分钟} & \textbf{满意度} & \textbf{路线类型} & \textbf{景点路线} & \textbf{区域路线} \\
-    \midrule
-    0 & 82.0  & 165.0 & 0.392 & 2 day & S1,S4,S6,S2 & R1,R4,R2 \\
-    1 & 116.0 & 225.0 & 0.361 & 2 day & S1,S2,S6,S4 & R2,R2,R4 \\
-    2 & 25.0  & 45.0  & 0.506 & 1 day & S3,S6 & R3 \\
-    3 & 161.0 & 285.00 & 0.401 & 3 day & S1,S4,S6,S5,S3,S2 & R1,R2,R3,R3,R2 \\
-    4 & 208.00 & 370.00 & 0.3560 & 3 day & S2,S3,S5,S4,S1,S6 & R2,R3,R4,R4,R2 \\
-    5 & 219.00 & 380.00 & 0.348 & 3 day & S3,S6,S5,S2,S4,S1 & R2,R3,R4,R2,R4 \\
-    \bottomrule
-  \end{tabularx}
-  \label{tab:kmeans_summary}
-\end{table}
-
-
-
-\begin{figure}[h]
-\centering
-\captionsetup{font={small, stretch=1.312}}
-\includegraphics[width=1.0\columnwidth]{figures/tourism_optimization_clusters.png}
-\bicaption[聚类结果可视化]{聚类结果可视化图。}[clusterResult]{Histogram of clusterReseult.}
-\label{figure3: cluster}
-\end{figure}
-
-
-由以上图表可以看出，聚类结果能够有效地将不同类型的旅游路线进行区分，每个簇代表了具有代表性的出行偏好和路线组合。各方案在成本、时间和满意度等方面表现均衡，能够满足不同游客的需求。整体来看，模型聚类效果良好，结果具有较强的实际参考价值。
-
-
-
-
-
-
-\section[\hspace{-2pt}问题三：旅馆建设规模与位置选择]{{\heiti\zihao{-3} \hspace{-8pt}问题三：旅馆建设规模与位置选择}}\label{section4: 问题3：旅馆建设规模与位置选择}
-
-\subsection[\hspace{-2pt}模型建立流程]{{\heiti\zihao{4}\hspace{-8pt}模型建立流程}}\label{subsec:3-model-build}
-
-
-本模型旨在分析重庆旅游景区的住宿扩容问题，基于游客需求、交通成本、时间消耗和景区容量等因素，通过构建优化模型对扩容方案进行评估。
-
-\noindent\textbf{首先，模型采用了基于规模报酬递减的扩容成本函数：}
+1. **产量与销量的约束：**  
+作物的产量不应超过需求量，具体为：
 \begin{equation}
-  \begin{aligned}
-    C(\Delta K)=c_{1}(\Delta K)^{\gamma}, \quad c_{1} =7\times 10^{-4}\text{（亿元）}, \gamma = 1.09
-  \end{aligned}
+Y_{m,t}^{(\omega)}\sum_{i}x_{i,m,t,s} \leq D_{m,t}^{(\omega)} \quad \forall m,t,s,\;\forall \omega \in \Omega
 \end{equation}
 
-此扩容成本函数是采用来自网络的数据统计，并进行处理后得到的。
-
-\noindent\textbf{并定义了经济收益函数 $B(\Delta K)$：}
-
+2. **耕地面积约束：**  
+每块地的种植总面积不能超过其可用面积，设第 $i$ 块地的最大可用面积为 $A_{f_{all}}$，约束条件为：
 \begin{equation}
-  \begin{aligned}
-    B(\Delta K) = v_{s}[Z(K)-Z(K^0)]+v_{p}[N(K)-N(K^{0})]
-  \end{aligned}
+\sum_{m=1}^{41} x_{i,m,t} \leq A_{f_{all}} \quad \forall i, \forall t
 \end{equation}
 
-其中考虑了扩容后满意度增量和游客接待量的增量。满意度增量通过扩容后游客对旅游线路的偏好变化进行计算，接待量增量则基于实际可接待游客人数与扩容前的差异。
-
-\noindent\textbf{扩容决策的目标是最大化净收益:}
-
+3. **作物种植数量限制：**  
+每块地的种植作物数量有最大数量限制，具体为：
 \begin{equation}
-  \begin{aligned}
-    \underset{r,\Delta K\geq 0}{max}  F_r(\Delta K) = B_r(\Delta K) - C(\Delta K)
-  \end{aligned}
+\sum_{m=1}^{41} z_{i,m,t} \leq N_{\text{max}} \quad \forall i, \forall t
 \end{equation}
 
-即通过选择最优区域和扩容规模 $\Delta K$，使得总的经济效益最大。模型通过枚举不同区域和容量增量，计算每种方案的经济收益，并结合遗传算法和线性规划（MILP）对扩容后的最优游客分配进行求解。最终，选出净收益最大的扩容方案，并提供详细的扩容规模及其对应的效益曲线。
+\textbf{求解过程}
 
+\textbf{输入数据：}  
+\begin{itemize}
+    \item 作物的预期销售量 $D_{m,s}$；
+    \item 每种作物的单价 $P_{m,s}$，亩产量 $Y_{m,s}$，种植成本 $C_{m,s}$；
+    \item 各地块的可用面积 $A_{f_{all}}$，以及每块地的作物最小种植面积限制 $\delta$。
+\end{itemize}
 
+\textbf{模型求解方法：}  
+采用蒙特卡洛采样法（SAA）与混合整数线性规划（MILP）方法求解此优化问题。具体步骤如下：
 
-该模型不仅帮助政府和企业做出最优的扩容决策，还能评估不同扩容方案的经济影响，为旅游业的长期规划提供支持。
+\begin{itemize}
+    \item 使用求解器（如 Gurobi 或 CPLEX）解决模型中的线性约束和目标函数。
+    \item 对于每个年度 $t$，按照最大化收益的目标，计算每个地块的作物种植面积分配。
+    \item 考虑作物的销售限制、作物轮作约束以及豆类作物种植面积要求，确保在求解过程中遵循所有约束。
+\end{itemize}
 
-\subsection[\hspace{-2pt}模型求解]{{\heiti\zihao{4}\hspace{-8pt}模型求解}}\label{subsec:3-model-build}
+\textbf{结果输出：}  
+求解器返回最优的种植方案，输出每个地块在每年各季节的种植作物和面积。该结果可以填入对应的模板文件中。
 
-模型的求解采用“双层结构”。外层离散搜索扩容区域$r$与规模$\Delta K$，内层维持既有的“枚举路线结合MILP”的流程：
+通过此优化模型和求解过程，我们可以得到2024至2030年间的最优种植方案，确保农作物种植的经济效益最大化，同时满足所有农业生产和管理要求。
 
-\noindent\textbf{外层：}
+\subsection[\hspace{-2pt}算法伪代码流程]{{\heiti\zihao{4} \hspace{-8pt}算法伪代码流程}}\label{section3: 算法伪代码流程}
 
-\begin{equation}
-  \begin{aligned}
-    \underset{r,\Delta K \geq 0}{max} F_{r}(\Delta K)
-  \end{aligned}
-\end{equation}
-
-\noindent\textbf{内层：}
-\begin{equation}
-  \begin{aligned}
-    Z(K),N(K)=arg\quad \underset{x}{max} \sum_{i}s_{i}x_{i}\\
-    s.t. \text{容量约束}K
-  \end{aligned}
-\end{equation}
-
-具体算法如下所示：
+以下为模型求解的伪代码流程：
 
 \begin{algorithm}[H]\small
-  \setstretch{1.245}
-  \renewcommand{\algorithmcfname}{算法}
-  \caption{旅游景区扩容优化算法}
+\setstretch{1.245} % 设置行距
+\renewcommand{\algorithmcfname}{算法}
+\caption{农作物种植优化模型求解伪代码流程}
+\KwIn{作物的预期销售量 $D_{m,s}$、单价 $P_{m,s}$、亩产量 $Y_{m,s}$、种植成本 $C_{m,s}$、可用面积 $A_{f_{all}}$、最小种植面积 $\delta$}
+\KwData{场景数 $S$，风险系数 $\lambda$}
 
-  \KwIn{原始夜宿容量 $K_0=(K_1^0,\dots,K_6^0)$；扩容步长集合
-        $\Delta\mathcal K=\{0,0.5,1,\dots,\Delta K_{\max}\}$；游客需求 $T^0$}
-  \KwOut{最优扩容区域 $r^*$、规模 $\Delta K^*$ 及最大净收益 $F^*$}
+\textbf{步骤1：场景数据生成}\\
+\For{$\omega = 1$ \textbf{to} $S$}{
+    生成随机增量 $\delta^{D}_{m,t}$、$\delta^{Y}_{m,t}$、$\delta^{C}_{m,t}$、$\delta^{P}_{m,t}$\\
+    计算派生参数 $D_{m,t}^{(\omega)}$、$Y_{m,t}^{(\omega)}$、$C_{m,t}^{(\omega)}$、$P_{m,t}^{(\omega)}$\\
+}
 
-  \textbf{步骤1：基准求解}\;
-  $\text{base\_results}\leftarrow\text{optimizer.run\_optimization}(K_0)$\;
-  取 $Z(K^0),\,N(K^0)$\;
-
-  \textbf{步骤2：区域与扩容规模枚举}\;
-  \For{$r\leftarrow1$ \KwTo $6$}{
-    \For{${\Delta K}\in\Delta\mathcal K$}{
-      $K_r \leftarrow K_r^0 + \Delta K$\tcp*{修改容量上限}
-      $\text{cur} \leftarrow \text{optimizer.run\_optimization}(K_r)$\;
-      取 $Z(K),\,N(K)$\;
-      $B = v_s\bigl[Z(K)-Z(K^0)\bigr] + v_p\bigl[N(K)-N(K^0)\bigr]$\;
-      $C = 0.0007\,(\Delta K)^{1.09}$\;
-      $F(r,\Delta K) = B - C$\;
+\textbf{步骤2：逐年逐地块优化}\\
+\For{$t = 2024$ \textbf{to} $2030$}{
+    \For{$i = 1$ \textbf{to} $34$}{
+        计算各作物种植面积 $x_{i,m,t,s}$ 以最大化收益\\
+        计算并更新作物种植成本与销售收益\\
+        验证各项约束条件（如面积限制、轮作约束等）\\
     }
-  }
+}
 
-  \textbf{步骤3：选择最优方案}\;
-  $(r^*,\Delta K^*) = \arg\max_{r,\Delta K} F(r,\Delta K)$\;
-  $F^* \leftarrow F(r^*,\Delta K^*)$\;
+\textbf{步骤3：求解优化模型}\\
+求解并获得最优解 $x^\star$\\
 
-  \textbf{步骤4：绘制净收益曲线}\;
-  绘制 $F(r,\Delta K)$ 随 $\Delta K$ 变化的曲线，并标注 $(r^*,\Delta K^*)$\;
+\textbf{步骤4：输出结果}\\
+输出每年各地块的作物种植方案\\
 
-  \label{algorithm:expansion_optimization}
+\label{algorithm:crop_optimization}
 \end{algorithm}
+
+
+
+
+
+
+
+\section[\hspace{-2pt}问题三：农作物种植优化策略（考虑价格弹性、替代性与互补性）]{{\heiti\zihao{-3} \hspace{-8pt}问题三：农作物种植优化策略（考虑价格弹性、替代性与互补性）}}\label{section3: 问题3：农作物种植优化策略}
+
+\subsection[\hspace{-2pt}模型建立与求解]{{\heiti\zihao{4} \hspace{-8pt}模型建立与求解}}\label{section3: 模型建立与求解}
+
+在第三问中，我们需要基于第二问的模型，加入考虑农作物间的价格弹性、替代性和互补性等因素，来设计2024~2030年间的最优种植策略。根据实际市场情况，作物的价格、销量、种植成本之间存在相互影响，尤其是作物间的替代性和互补性需要特别考虑。本模型的目标是最大化农作物种植的经济效益，同时考虑供需关系对价格和销量的影响。
+
+\textbf{目标函数：}  
+与第二问相似，我们的目标函数依然是最大化农作物的收益，但是这次需要对价格和销量进行调整。通过引入价格和需求弹性系数，将作物的价格和需求纳入优化目标。具体公式如下：
+
+\begin{equation}
+  \text{Maximize}\quad Z = \sum_{t=2024}^{2030} \sum_{m=1}^{41} \sum_{i=1}^{34} \sum_{s=1}^{2} \left( \tilde{P}_{m,t} \cdot Y_{m,t}^{\text{eff}} \cdot x_{i,m,t,s} - C_{m,t} \cdot x_{i,m,t,s} \right)
+\end{equation}
+
+其中，$\tilde{P}_{m,t}$为考虑替代性和互补性后的调整价格，$Y_{m,t}^{\text{eff}}$为考虑轮作增益后的有效亩产量，$x_{i,m,t,s}$为第 $i$ 块地在第 $t$ 年第 $s$ 季节种植第 $m$ 类作物的面积。
+
+\textbf{有效需求：}  
+在此模型中，我们将有效需求（$\tilde{D}_{m,t}$）替代原始的需求量（$D_{m,t}$），以便反映作物价格与销量之间的关系。有效需求是通过价格弹性和市场供需关系进行调节的，公式如下：
+
+\begin{equation}
+  \tilde{D}_{m,t} = D_{m,t} \left( 1 + \eta_{m} \cdot \frac{\tilde{P}_{m,t} - P_{m,t}}{P_{m,t}} \right)
+\end{equation}
+
+\textbf{作物替代性与互补性：}  
+我们引入了替代性系数和互补性系数来调整作物之间的供需关系。作物的需求会受到同类作物增加（替代性）或互补作物增加（互补性）的影响。替代性和互补性会影响作物的价格和需求，公式如下：
+
+\begin{equation}
+  \tilde{P}_{m,t} = P_{m,t} \left( 1 - \sum_{k \in \text{Subs}(m)} \alpha_{k \to m} \frac{Q_{k,t}}{Q_{k}^{\star}} + \sum_{k \in \text{Comp}(m)} \eta_{k \to m} \frac{Q_{k,t}}{Q_{k}^{\star}} \right)
+\end{equation}
+
+\begin{equation}
+  \tilde{D}_{m,t} = \tilde{D}_{m,t} - \sum_{k \in \text{Subs}(m)} \alpha_{k \to m} Q_{k,t} + \sum_{k \in \text{Comp}(m)} \eta_{k \to m} Q_{k,t}
+\end{equation}
+
+\textbf{轮作增益：}  
+为了简化模型，我们假设轮作能够增加单产（例如，豆类与玉米的轮作可增加10%的单产）。在模型中，我们将轮作增益系数（$\theta^{\text{rotation}}_m$）加入到作物的单产中，来考虑轮作的正向影响。具体形式如下：
+
+\begin{equation}
+  Y_{i,m,t}^{\text{eff}} = Y_{m,t} \cdot \left( 1 + \theta^{\text{rotation}}_m \cdot z_{i,m,t-1} \right)
+\end{equation}
+
+其中，$z_{i,m,t}$为二元变量，表示第 $i$ 块地在第 $t$ 年是否种植第 $m$ 类作物。
+
+\subsection[\hspace{-2pt}求解过程]{{\heiti\zihao{4} \hspace{-8pt}求解过程}}\label{section3: 求解过程}
+
+\textbf{输入数据：}  
+\begin{itemize}
+  \item 作物的预期销售量 $D_{m,t}$。
+  \item 每种作物的单价 $P_{m,t}$，亩产量 $Y_{m,t}$，种植成本 $C_{m,t}$。
+  \item 作物替代性系数 $\alpha_{k \to j}$ 和互补性系数 $\beta_{k \to j}$。
+  \item 各地块的可用面积 $A_{f_{all}}$，以及每块地的作物最小种植面积限制 $\delta$。
+  \item 每种作物的轮作增益系数 $\theta^{\text{rotation}}_m$。
+\end{itemize}
+
+\textbf{模型求解方法：}  
+我们采用混合整数线性规划（MILP）方法来求解该问题，具体步骤如下：
+
+\begin{itemize}
+  \item 对于每个年度 $t$，利用供给和价格弹性关系，计算调整后的价格 $\tilde{P}_{m,t}$ 和有效需求 $\tilde{D}_{m,t}$。
+  \item 引入替代性和互补性调整项，根据作物间的相互关系调整作物的市场需求。
+  \item 考虑轮作增益，计算每个地块的有效单产 $Y_{m,t}^{\text{eff}}$。
+  \item 使用求解器（如 Gurobi 或 CPLEX）求解优化问题，得到每个地块的最优种植面积和作物分配方案。
+\end{itemize}
+
+\textbf{结果输出：}  
+求解器返回最优的种植方案，输出每个地块在每年各季节的种植作物和面积，并提供每种作物的调整后价格和有效需求。通过分析这些结果，可以得出最优的农作物种植策略，以最大化2024至2030年间的经济效益。
+
+通过该优化模型，我们能够考虑作物间的价格弹性、替代性与互补性以及轮作效应，从而得到更加精细化和可行的农作物种植策略，进一步提升农业生产的效益并减少市场风险。
+
 
 \subsection[\hspace{-2pt}结果分析]{{\heiti\zihao{4}\hspace{-8pt}结果分析}}\label{subsec:3-model-build}
-在完成模型求解后，净收益曲线清晰展示了不同区域在不同扩容规模下的经济效益。下表汇总了主要扩容方案的关键指标，并按净收益从高到低排序。并且为进一步直观对比扩容规模与净收益关系，绘制了不同区域在多种扩容方案下的净收益分布。以下是得出的结论：
-\begin{enumerate}
-  \item \textbf{区域3呈现显著经济优势}：前七大高收益方案均集中于区域3，其中以扩容 1.00~万人次的方案最优，净收益达 74.32~亿元，其次为 2.00~万人次（70.43~亿元）与 1.50~万人次（57.90~亿元）。
-  \item \textbf{净收益对扩容规模并非单调增加}：区域3扩容从 1.00 提升至 2.00~万人次时，净收益下降，体现边际效益递减。曲线走势亦证实存在一最佳扩容规模区间。
-  \item \textbf{其他区域仍具备潜力}：区域4 在小规模扩容（0.50~万人次）下即可带来 33.19~亿元收益；区域5 与区域1 的部分方案亦具备可观回报，但整体低于区域3；区域2 受限于基础容量与偏好，收益相对有限。
-\end{enumerate}
-
-\begin{table}[htbp]\small
-  \centering
-  \caption{旅馆扩容方案净收益分析结果}
-  \label{tab:expansion-results}
-  \begin{tabularx}{\textwidth}{c c c c c}
-    \toprule
-    \textbf{区域} & \textbf{扩容规模/万人次} & \textbf{原容量/万人次} & \textbf{新容量/万人次} & \textbf{净收益/亿元} \\
-    \midrule
-    区域3 & 1.00 & 0.66 & 1.66 & 74.3205 \\
-    区域3 & 2.00 & 0.66 & 2.66 & 70.4321 \\
-    区域3 & 1.50 & 0.66 & 2.16 & 57.9014 \\
-    区域3 & 4.50 & 0.66 & 5.16 & 53.2195 \\
-    区域3 & 3.00 & 0.66 & 3.66 & 48.7040 \\
-    区域3 & 4.00 & 0.66 & 4.66 & 46.9166 \\
-    区域3 & 5.00 & 0.66 & 5.66 & 44.5128 \\
-    区域4 & 0.50 & 2.16 & 2.66 & 33.1853 \\
-    区域3 & 0.50 & 0.66 & 1.16 & 30.0672 \\
-    区域3 & 3.50 & 0.66 & 4.16 & 29.9084 \\
-    区域5 & 4.00 & 1.38 & 5.38 & 28.5287 \\
-    区域5 & 3.50 & 1.38 & 4.88 & 28.0013 \\
-    区域1 & 1.00 & 1.14 & 2.14 & 27.6119 \\
-    区域5 & 2.00 & 1.38 & 3.38 & 25.1312 \\
-    区域3 & 2.50 & 0.66 & 3.16 & 24.3754 \\
-    区域2 & 1.00 & 1.92 & 2.92 & 24.1800 \\
-    区域1 & 1.50 & 1.14 & 2.64 & 23.6578 \\
-    区域5 & 0.00 & 1.38 & 1.38 & 23.5974 \\
-    区域1 & 2.00 & 1.14 & 3.14 & 22.2397 \\
-    区域1 & 0.00 & 1.14 & 1.14 & 20.2017 \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\textwidth]{figures/net_benefit_vs_expansion.png}
-  \caption{不同区域扩容规模与净收益关系图}
-  \label{fig:net-benefit-expansion}
-\end{figure}
 
 
 
