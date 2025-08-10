@@ -152,19 +152,19 @@ z_{i,m,t} + z_{i,m,t+1} \leq 1 \quad \forall i, \forall m, \forall t
 \textbf{约束条件：}  
 在优化过程中，我们需要满足以下约束条件：
 
-1. **产量与销量的约束：**  
+1. 产量与销量的约束：
 作物的产量不应超过需求量，具体为：
 \begin{equation}
 Y_{m,t}^{(\omega)}\sum_{i}x_{i,m,t,s} \leq D_{m,t}^{(\omega)} \quad \forall m,t,s,\;\forall \omega \in \Omega
 \end{equation}
 
-2. **耕地面积约束：**  
+2. 耕地面积约束：
 每块地的种植总面积不能超过其可用面积，设第 $i$ 块地的最大可用面积为 $A_{f_{all}}$，约束条件为：
 \begin{equation}
 \sum_{m=1}^{41} x_{i,m,t} \leq A_{f_{all}} \quad \forall i, \forall t
 \end{equation}
 
-3. **作物种植数量限制：**  
+3. 作物种植数量限制： 
 每块地的种植作物数量有最大数量限制，具体为：
 \begin{equation}
 \sum_{m=1}^{41} z_{i,m,t} \leq N_{\text{max}} \quad \forall i, \forall t

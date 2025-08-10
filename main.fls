@@ -524,6 +524,12 @@ INPUT ./contents/cover1.pdf
 INPUT ./contents/cover1.pdf
 INPUT ./contents/cover1.pdf
 OUTPUT main.xdv
+INPUT ./contents/introduction.tex
+INPUT ./contents/introduction.tex
+OUTPUT contents/introduction.aux
+INPUT ./contents/introduction.tex
+INPUT ./contents/introduction.tex
+INPUT contents/introduction.tex
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr8.tfm
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr6.tfm
@@ -557,12 +563,6 @@ INPUT e:/latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs10.tfm
 INPUT e:/latex/texlive/2025/texmf-dist/fonts/tfm/public/rsfs/rsfs5.tfm
-INPUT ./contents/introduction.tex
-INPUT ./contents/introduction.tex
-OUTPUT contents/introduction.aux
-INPUT ./contents/introduction.tex
-INPUT ./contents/introduction.tex
-INPUT contents/introduction.tex
 INPUT ./contents/analysis.tex
 INPUT ./contents/analysis.tex
 OUTPUT contents/analysis.aux

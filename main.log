@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.5.17)  9 AUG 2025 19:10
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025) (preloaded format=xelatex 2025.5.17)  10 AUG 2025 10:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1935,23 +1935,6 @@ Package fontspec Info:
 (fontspec)             <->"SimHei/OT:script=hani;language=dflt;mapping=tex-text
 ;"
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 65.
-
-(e:/latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 65.
-
-
-(e:/latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 65
-.
-
-(e:/latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
-File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
-)
 
 LaTeX Font Warning: Font shape `TU/SimHei(0)/b/n' undefined
 (Font)              using `TU/SimHei(0)/m/n' instead on input line 65.
@@ -2015,7 +1998,23 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\@ifnextchar' on input line 12.
 
+LaTeX Font Info:    Trying to load font information for U+msa on input line 16.
+
+(e:/latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
+LaTeX Font Info:    Trying to load font information for U+msb on input line 16.
+
+
+(e:/latex/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 16
+.
+
+(e:/latex/texlive/2025/texmf-dist/tex/latex/jknapltx/ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+))
 
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -2873,12 +2872,12 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 3AA4734DDD4187593E30DB063B449128;5179.
  ) 
 Here is how much of TeX's memory you used:
- 44383 strings out of 473832
- 968239 string characters out of 5730404
- 1929706 words of memory out of 5000000
- 66552 multiletter control sequences out of 15000+600000
+ 44359 strings out of 473832
+ 966597 string characters out of 5730404
+ 1929117 words of memory out of 5000000
+ 66528 multiletter control sequences out of 15000+600000
  573857 words of font info for 167 fonts, out of 8000000 for 9000
  1349 hyphenation exceptions out of 8191
  107i,17n,131p,1507b,2601s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on main.xdv (57 pages, 1946768 bytes).
+Output written on main.xdv (57 pages, 1946788 bytes).
